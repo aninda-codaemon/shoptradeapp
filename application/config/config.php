@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
+$config['base_url'] = 'http://shoptradeapp.local/';
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ $config['base_url'] = '';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -521,3 +521,17 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Shopify App Authorise URL
+|--------------------------------------------------------------------------
+|
+| After the app is redirected to our server, it will generate the access
+| token (online/offline) for the calling the various apis of shopify
+|
+*/
+$config['shopify_auth_url'] = 'shopify/get_shopify_merchant_info';
+
+$config['shopify_api_key'] = 'e2219d466c1d5b026cc69f7191efa29d';
+$config['shopify_api_secret'] = 'ccc9a6058858bae5b93f30c4800fd924';

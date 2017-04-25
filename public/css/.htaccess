@@ -1,0 +1,8 @@
+RewriteEngine on
+# this is needed for support of clean urls with php running as a cgi
+RewriteCond %{REQUEST_URI} \/pages\/
+RewriteRule .* /store/pages [QSA,L]
+
+<Files pages>
+ForceType application/x-httpd-php
+</Files>

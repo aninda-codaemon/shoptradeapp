@@ -1,0 +1,248 @@
+body {
+    font-family: "Open Sans",sans-serif;
+}
+.custom-head{
+    min-height: 5em;
+    background-color: #fff;
+    padding-top: 0.625em;
+}
+
+.align-right{
+    text-align: right;
+}
+
+.blue-bg{
+    background-color: #263348!important;
+
+    margin-top: 2em;
+}
+
+.text-grey{
+    color: #D6D6D6!important;
+}
+
+.text-white{
+    color: #FFF!important;
+}
+.text-blue{
+    color: #263348;
+}
+.font-normal{
+    font-weight: normal!important;
+}
+.contact-btn{
+    color: #fff;
+    background: #19B2CC;
+    border-color: #19B2CC;
+    float: left !important;
+    font-size: 1.2rem;
+    font-weight: normal;
+    height: auto;
+    line-height: 1;
+    margin: auto 1px;
+    padding: 0.4rem;
+    text-transform: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    font-family: "Open Sans",sans-serif;
+}
+.contact-btn:hover{
+    color: #fff;
+    background: #169fb7 none repeat scroll 0 0;
+    border-color: #169fb7;
+}
+
+.pull-right {
+    float: right;
+}
+.T-margin-2{
+    margin-top: 2em;
+}
+.margin-top-2 {
+    margin-top:2em;
+}
+label {
+    font-size: 0.8em;
+}
+.margin-top-1 {
+    margin-top:1em;
+}
+input[type="checkbox"], input[type="radio"] {
+    width: 2em;
+    height: 2em;
+    margin-top: 2em;
+}
+.text-terms {
+    font-size: 0.8em;
+    line-height: 1.2em;
+}
+.text-logo {
+    font-weight: 900;
+    margin: 10px 0px;
+}
+.text-tag-line {
+    font-weight: 700;
+    width: 90%;
+    margin: 10px 0px;
+}
+.text-info {
+    font-size: 2em;
+    font-weight: 500;
+    line-height: 1.3em;
+}
+.text-info > span{
+    font-weight: 700;
+}
+.text-Navy {
+    color: #263348;
+}
+.margin-auto {
+    margin: auto;
+}
+.text-Teal {
+    color: #19B2CC;
+}
+.btn-Teal {
+    background: #19B2CC;
+    border-color: #19B2CC;
+    font-weight: 400;
+}
+.btn-Teal:hover,.btn-Teal:active,.btn-Teal:focus {
+    background: #169FB7;
+    border-color: #169FB7;
+}
+.text-contact {
+    line-height: 3.7em;
+    margin: auto 2em;
+    font-weight: 700;
+}
+a,a:hover{
+    text-decoration: none;
+}
+.logo-image {
+    margin: auto 2em;
+}
+.btn-visit {
+    margin: auto 2em;
+
+}
+.btn-visit > button {
+    font-size: 1em;
+    line-height: 1em;
+    font-family: "Open Sans",sans-serif;
+}
+.table-customer {
+    color: #263348;
+}
+table  tbody  td{
+    font-weight: 700;
+}
+address {
+    font-style: normal;
+}
+table th:hover {
+    background: none;
+    color: #263348;
+    cursor: pointer;
+}
+.btn-Blue {
+    background: #2164D0;
+    border-color: #2164D0;
+    font-size: 1.2rem;
+    font-weight: normal;
+    height: auto;
+    line-height: 1;
+    margin: auto 1px;
+    padding: 0.6rem 0.5em;
+    text-transform: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    font-family: "Open Sans",sans-serif;
+}
+.btn-Blue:hover {
+    background: #164EA8;
+    border-color: #164EA8;
+}
+table a{
+    color: #2164D0;
+}
+table td:nth-child(1){
+    color: #164EA8;
+}
+table td a:nth-child(1){
+    color: #263348;
+}
+.yellow .fa {
+    /* position: relative;
+top: 3px;
+    left: -3px;*/
+    color: #6f4f26;
+    background-size: 12px 12px;
+}
+.tag {
+    transition: all 0.5s ease-in-out;
+}
+
+.btn-default {
+    background-color: #FEFEFE 
+}
+.btn-default:hover {
+    background-color: #F2F2F2 
+}
+.btn-dark {
+    background-color: #363C56;
+    color: #fff;
+}
+.btn-dark:hover {
+    background-color: #1E2230;
+
+}
+.btn-primary {
+    background-color: #80DAE5;
+    color: #fff;
+}
+.btn-primary:hover {
+    background-color: #4ECCDB; 
+}
+.btn-success {
+    background-color: #CADB47;
+    color: #fff;
+}
+.btn-success:hover {
+    background-color: #AEBF25; 
+}
+.btn-info {
+    background-color: #68DEBB; 
+    color: #fff;
+}
+.btn-info:hover {
+    background-color: #36D2A5 
+}
+.btn-warning {
+    background-color: #FF8441; 
+    color: #fff;
+}
+.btn-warning:hover {
+    background-color: #FF5C03; 
+}
+.btn-danger {
+    background-color: #F6565A; 
+    color: #fff;
+}
+.btn-danger:hover {
+    background-color: #F41C20; 
+}
+.btn-alert {
+    background-color: #FFC42A; 
+    color: #fff;
+}
+.btn-alert:hover {
+    background-color: #EBAB00; 
+}
+.btn-system {
+    background-color: #675F99;
+    color: #fff;
+}
+.btn-system:hover {
+    background-color: #4D4773 
+}
