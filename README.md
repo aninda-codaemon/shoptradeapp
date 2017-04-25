@@ -1,0 +1,2 @@
+# shoptradeapp
+Shoptrade shopify app
