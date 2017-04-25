@@ -5,14 +5,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <head>
         <meta charset="utf-8">
         <title>Order List</title>
-        <?php $this->load->view('common/front_css1'); ?>
+        <?php $this->load->view('common/front_css'); ?>
     </head>
     <body>
         <header class="custom-head">
             <article>
                 <div class="columns four">
                     <div class="logo-image align-left">
-                        <img src="<?php echo base_url();?>public/img/img_logo_with_text.png" alt="" width="200em">
+                        <img src="<?php echo base_url();?>public/img/logo_156x70_old.png" alt="" width="200em">
                     </div>
                 </div>
                 <div class="columns eight align-right">
@@ -49,20 +49,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if($lastid == 0) {
-                                 foreach ($orders as $order) { ?>                    
+                                <?php 
+                                    $lastid = 0;
+
+                                    if($lastid == 0) {
+                                        foreach ($orders as $order) { ?>                    
                                     <tr>
-                                        <td><a href="https://<?= $_SESSION['shop'] ?>/admin/orders/<?= $order['id'] ?>" target="_blank">#<?php echo $order['order_no']; ?></a></td>
+                                        <td><a href="#" target="_blank">#<?php echo $order['name']; ?></a></td>
                                         <td><?= date("M d, h:sa", strtotime($order['created_at'])) ?></td>
                                         <td>
                                             <address>
                                                 <strong>
-                                                    <?php echo $order['s_first_name'] . ' ' . $order['s_last_name']; ?>
+                                                    <?php echo $order['customer']['first_name'] . ' ' . $order['customer']['last_name']; ?>
                                                     <!--<a class="red-text" target="_blank" href="https://www.knowthycustomer.com/f/search/person?age=&city=&fn=<?= $order['customer']['first_name'] ?>&ln=<?= $order['customer']['last_name'] ?>&mn=&state=&address=&phone=&email=&ip="><?php echo $order['customer']['first_name'] . ' ' . $order['customer']['last_name']; ?></a>-->
                                                 </strong>
                                                 <br><span class="font-normal">
                                                 <?php
-                                                    echo $order['s_address1'] . ', ' . $order['s_city'] . '<br>' . $order['s_province'] . ', ' . $order['s_country'] . ' - ' . $order['s_zip'];
+                                                    //echo $order['s_address1'] . ', ' . $order['s_city'] . '<br>' . $order['s_province'] . ', ' . $order['s_country'] . ' - ' . $order['s_zip'];
                                                 ?></span>
                                             </address>
                                         </td>
@@ -75,7 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </td>-->
                                         <td>
                                             <?php $color = '';
-                                                $payment = $order['payment_status'];
+                                                $payment = $order['financial_status'];
                                                 if($payment == 'paid') {
                                                     $color = 'green';
                                                 } else if($payment == 'partially_refunded') {
@@ -108,19 +111,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </td>
                                         <td><?= $order['total_price'] ?></td>
                                         <td>
-                                            <button class="btn-Blue" onclick="opennewtab('https://www.knowthycustomer.com/f/search/property?address=<?= $order['s_address1'] ?>&city=<?= $order['s_city'] ?>&state=&zipcode=<?= $order['s_zip'] ?>')">Run Fraud Check <i class="fa fa-share-square-o" aria-hidden="true"></i></button>
+                                            &nbsp;
                                         </td>
                                     </tr>
                                 <?php } ?>
-                                    <tr class="display-none" id="lastid"><td><?php echo $lastordernew = $order['order_no'];?></td></tr>
-                                    <tr class="display-none" id="pagecount"><td><?=$count?></td></tr>
+                                    <tr class="display-none" id="lastid"><td><?php $lastordernew = $order['name'];?></td></tr>
+                                    <tr class="display-none" id="pagecount"><td><?php $count ?></td></tr>
                                 <?php } else {
                                     $this->load->view('layout/order_listing_table',$orders);
                                 }?>
                             </tbody>
                         </table>
                         <div id="navdiv">
-                            <p class="display-none" id="ocount"><?php echo $ocount;?></p>
+                            <p class="display-none" id="ocount"><?php //echo $ocount;?></p>
                             <button style="float: left;" class="display-none btn-Blue" id="prevpage">Prev</button>
                             <button style="text-align:right;" class="btn-Blue" id="nextpage">Next</button>
                         </div>
@@ -128,7 +131,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
             </article>
         </section>
-        <?php $this->load->view('common/footer_js1'); ?>
+        <?php $this->load->view('common/footer_js'); ?>
         <script>
             $(document).ready(function () {
                 $('#signup_user').bValidator();
