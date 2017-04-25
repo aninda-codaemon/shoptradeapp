@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </header>
         <section class="full-width">
             <article class="">
-                <p class="T-margin-2">Click the "Run Fraud Check" button to view fraud indicators for any of your orders below. Your KnowThyCustomer Fraud Check will open in a new browser tab.</p>
+                <!--<p class="T-margin-2">Click the "Run Fraud Check" button to view fraud indicators for any of your orders below. Your KnowThyCustomer Fraud Check will open in a new browser tab.</p>-->
 
             </article>
         </section>
