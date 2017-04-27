@@ -32,7 +32,8 @@ class Shopify extends CI_Controller {
     * after redirecting from shopify app
     **/
     public function welcome_app() {
-        
+        session_unset();
+
         $shop           = $this->input->get('shop');
         $scope          = $this->input->get('scope');
         $api_key        = $this->input->get('api');
@@ -64,6 +65,8 @@ class Shopify extends CI_Controller {
         $api_secret         = $this->config->item('shopify_api_secret');
         $shop               = $this->input->get('shop');
 
+        $this->session->set_userdata('shop', $shop);
+
         //check if store is already registered or not
         $store_exist        = $this->store->check_store_exist_by_domain($shop);
 
@@ -78,7 +81,7 @@ class Shopify extends CI_Controller {
             //update the access token
             $dataArray          = array('key' => $access_data['access_token']);
             $this->store->update_store_info($shop, $dataArray);
-            
+
             //get the shop token access data
             $response           = $this->store->get_store_info_by_domain($shop);
 
@@ -116,9 +119,23 @@ class Shopify extends CI_Controller {
         /*echo '<pre>';
         print_r($orders);
         die();*/
-        
-        $this->load->view('layout/order_listing', array('orders' => $orders));
+            
+        $this->user_activity();
+
+        //$this->load->view('layout/order_listing', array('orders' => $orders));
     }
+
+    public function user_activity(){
+        echo 'Shop: '.$this->session->userdata('shop');
+        //get the shop token access data
+        $shop               = $this->session->userdata('shop');
+        $response           = $this->store->get_store_info_by_domain($shop);
+        print_r($response);
+
+        //get all the user activity for the store
+        $last_wk            = date('Y-m-d', strtotime('-7 days'));
+        
+    }   
     
     /**
     * Function to call the curl

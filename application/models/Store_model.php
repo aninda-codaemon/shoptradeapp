@@ -41,7 +41,7 @@ class Store_model extends CI_Model{
 		$this->db->update('store', $data);
 		return 1;
 	}
-
+	
 }
 
 ?>
