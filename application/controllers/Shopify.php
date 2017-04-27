@@ -37,14 +37,14 @@ class Shopify extends CI_Controller {
         $scope          = $this->input->get('scope');
         $api_key        = $this->input->get('api');
         $secret         = $this->input->get('secret');
-
+        
         ////Load shopify API related files                
         $shopifyClient  = new ShopifyClient($shop, "", $api_key, $secret);
-
+        
         // Now, request the token and store it in your session.
         // Url to redirect and get the app authorise key/access token
         $auth_url       = base_url() . $this->config->item('shopify_auth_url');
-
+        
         ///// redirect to authorize url /////        
         redirect($shopifyClient->getAuthorizeUrl($scope, $auth_url, ' '), 'location');        
         exit;        
@@ -67,18 +67,23 @@ class Shopify extends CI_Controller {
         //check if store is already registered or not
         $store_exist        = $this->store->check_store_exist_by_domain($shop);
 
+        //save the shop info into the table
+        ////Load shopify API related files        
+        ///// call shopify API to get access(offline) token /////
+        $shopifyClient      = new ShopifyClient($shop, "", $api_key, $api_secret);
+        $access_data        = $shopifyClient->getAccessToken($code);
+
         if ($store_exist > 0){
+            
+            //update the access token
+            $dataArray          = array('key' => $access_data['access_token']);
+            $this->store->update_store_info($shop, $dataArray);
             
             //get the shop token access data
             $response           = $this->store->get_store_info_by_domain($shop);
 
         }else{
-            //save the shop info into the table
-            ////Load shopify API related files        
-            ///// call shopify API to get access(offline) token /////
-            $shopifyClient      = new ShopifyClient($shop, "", $api_key, $api_secret);
-            $access_data        = $shopifyClient->getAccessToken($code);
-
+            
             //Shopify client call to fetch merchant info
             $sc_shop            = new ShopifyClient($shop, $access_data['access_token'], $api_key, $api_secret);
 
@@ -98,7 +103,7 @@ class Shopify extends CI_Controller {
                                     );
             
             ///Redirect to the app dashboard for first time users///    
-            $redirect_url = "https://".$shop."/admin/apps/shoptrade-app-test";            
+            $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";            
             redirect($redirect_url, 'location');
             die();
         }        
@@ -111,10 +116,10 @@ class Shopify extends CI_Controller {
         /*echo '<pre>';
         print_r($orders);
         die();*/
-
+        
         $this->load->view('layout/order_listing', array('orders' => $orders));
     }
-
+    
     /**
     * Function to call the curl
     * for the api
