@@ -12,7 +12,8 @@ class Shopify extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->helper('url');
-        $this->load->model('store_model', 'store');        
+        $this->load->model('store_model', 'store');
+        $this->load->model('activity_model', 'activity');
     }
     
     /**
@@ -126,7 +127,7 @@ class Shopify extends CI_Controller {
     }
 
     public function user_activity(){
-        echo 'Shop: '.$this->session->userdata('shop');
+        echo '<pre>Shop: '.$this->session->userdata('shop');
         //get the shop token access data
         $shop               = $this->session->userdata('shop');
         $response           = $this->store->get_store_info_by_domain($shop);
@@ -134,6 +135,10 @@ class Shopify extends CI_Controller {
 
         //get all the user activity for the store
         $last_wk            = date('Y-m-d', strtotime('-7 days'));
+
+        $user_activity      = $this->activity->get_user_activity_of_store_by_token($response['store_id'], $last_wk);
+
+        print_r($user_activity);
         
     }   
     
