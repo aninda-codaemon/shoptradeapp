@@ -58,7 +58,7 @@ class Shopify extends CI_Controller {
     * api calls
     **/
     public function get_shopify_merchant_info(){
-        
+                    
         $code               = $this->input->get('code');
         $hmac               = $this->input->get('hmac');
 
@@ -107,7 +107,7 @@ class Shopify extends CI_Controller {
                                     );
             
             ///Redirect to the app dashboard for first time users///    
-            $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";            
+            $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
             redirect($redirect_url, 'location');
             die();
         }        
@@ -116,13 +116,12 @@ class Shopify extends CI_Controller {
         $sc_shop            = new ShopifyClient($response['shop'], $response['access_token'], $api_key, $api_secret);
 
         // Get shop info
-        $orders             = $sc_shop->call('GET', '/admin/orders.json?status=any');        
+        //$orders             = $sc_shop->call('GET', '/admin/orders.json?status=any');        
         /*echo '<pre>';
         print_r($orders);
         die();*/
             
         $this->user_activity();
-
     }
 
     /**
@@ -144,6 +143,46 @@ class Shopify extends CI_Controller {
         //print_r($user_activity);
         
         $this->load->view('layout/user_activity', array('user_activity' => $user_activity));
+    }
+    
+    public function activity_details($activity_id){
+        $shop               = $this->session->userdata('shop');
+        $response           = $this->store->get_store_info_by_domain($shop);
+        $api_key            = $this->config->item('shopify_api_key');
+        $api_secret         = $this->config->item('shopify_api_secret');
+        
+        //get activity details
+        $activity_details   = $this->activity->get_activity_details_by_id($activity_id);
+
+        //echo '<pre>';
+        //print_r($activity_details);
+        //print_r(json_decode(unserialize($activity_details['history_data'])));
+
+        $product_data       = json_decode(unserialize($activity_details['history_data']));
+        $product_details    = array();
+        $product_ids        = '';
+
+        //Shopify client call to fetch product info
+        $sc_shop            = new ShopifyClient($shop, $response['access_token'], $api_key, $api_secret);
+
+        if (is_array($product_data)){
+            
+            foreach ($product_data as $value) {
+
+                if (!empty($product_ids)){
+                    $product_ids .= ',';    
+                }
+
+                $product_ids .= $value;                
+            }
+            
+        }else{            
+            $product_ids    = $product_data;
+        }        
+        
+        $product_info       = $sc_shop->call('GET', '/admin/products.json?ids='.$product_ids);        
+        
+        $this->load->view('layout/user_activity_details', array('activity_details' => $activity_details, 'product_info' => $product_info));
     }
 
     /**

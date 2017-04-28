@@ -8,12 +8,12 @@
         <form id="search_acitvity_frm" class="form-inline" method="POST" action="/shopify/search" >
             <div class="form-group col-lg-6 pull-right">
                 <div class="col-lg-5">
-                    <input value="<?php echo $from_date; ?>" type="text" id="from_date" name="from_date" class="search form-control" placeholder="Start Date" >
+                    <input value="<?php echo (isset($from_date)?$from_date:''); ?>" type="text" id="from_date" name="from_date" class="search form-control" placeholder="Start Date" >
                 </div>
                 <div class="col-lg-5">
-                    <input value="<?php echo $to_date; ?>" type="text" id="to_date" name="to_date" class="search form-control" placeholder="End Date" >
+                    <input value="<?php echo (isset($to_date)?$to_date:''); ?>" type="text" id="to_date" name="to_date" class="search form-control" placeholder="End Date" >
                 </div>
-                <button class="btn btn-custom pull-right" type="submit">Submit</button>
+                <button class="btn btn-custom pull-right" type="button" id="search_btn">Submit</button>
             </div>
         </form>
     </div>
@@ -63,8 +63,9 @@
         </td>
         <td><?php echo date('d-m-Y', strtotime($ua['create_date'])); ?></td>
         <td>
-            <button class="btn btn-info" type="submit">Details</button>
-            <button class="btn btn-custom" type="submit">Push</button>
+            <a class="btn btn-info" href="<?php echo base_url().'shopify/activity_details/'.$ua['id']; ?>" >Details</a>
+            <!--<button class="btn btn-info" type="button" onclick="" >Details</button>-->
+            <a href="#" class="btn btn-custom" >Push</a>
         </td>
     </tr>
     <?php
@@ -85,7 +86,7 @@
         $( "#from_date" ).datepicker({dateFormat: 'dd-mm-yy'});
     } );
 
-    $(document).on('submit', '#search_acitvity_frm', function(e){
+    $(document).on('click', '#search_btn', function(e){
         e.preventDefault();
 
         var from_date = $('#from_date');
@@ -101,7 +102,7 @@
             return false;
         }
 
-        return true;
+        $('#search_acitvity_frm').submit();
     });
 </script>
 <?php $this->load->view('common/footer') ?>
