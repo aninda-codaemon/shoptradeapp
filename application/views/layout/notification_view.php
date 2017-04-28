@@ -1,4 +1,4 @@
-<!DOCTYPE html> <?php //echo "<pre>"; print_r($userInfo['coupon_details']); exit; ?>
+<!DOCTYPE html> <?php //echo "<pre>"; print_r($_SESSION); exit; ?>
 <html >
     <head>
         <meta charset="UTF-8">
