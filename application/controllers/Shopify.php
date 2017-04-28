@@ -123,24 +123,54 @@ class Shopify extends CI_Controller {
             
         $this->user_activity();
 
-        //$this->load->view('layout/order_listing', array('orders' => $orders));
     }
 
+    /**
+    * Function to display all the user
+    * activities for last 7 days
+    **/
     public function user_activity(){
-        echo '<pre>Shop: '.$this->session->userdata('shop');
+        //echo '<pre>Shop: '.$this->session->userdata('shop');
         //get the shop token access data
         $shop               = $this->session->userdata('shop');
         $response           = $this->store->get_store_info_by_domain($shop);
-        print_r($response);
+        //print_r($response);
 
         //get all the user activity for the store
         $last_wk            = date('Y-m-d', strtotime('-7 days'));
 
         $user_activity      = $this->activity->get_user_activity_of_store_by_token($response['store_id'], $last_wk);
 
-        print_r($user_activity);
+        //print_r($user_activity);
         
-    }   
+        $this->load->view('layout/user_activity', array('user_activity' => $user_activity));
+    }
+
+    /**
+    * Function to display all the user
+    * activities by searching through
+    * a set of date range
+    * Method: POST
+    **/
+    public function search(){
+        $shop               = $this->session->userdata('shop');
+        $response           = $this->store->get_store_info_by_domain($shop);
+        $from_date          = $this->input->post('from_date', true);
+        $to_date            = $this->input->post('to_date', true);
+
+        $start_date         = date('Y-m-d', strtotime($from_date));
+        $end_date           = date('Y-m-d', strtotime($to_date));
+
+        if ($start_date > $end_date){
+            $tmp = $end_date;
+            $start_date = $end_date;
+            $end_date = $start_date;
+        }
+
+        $search_result      = $this->activity->get_user_activity_of_store_by_token_search($response['store_id'], $start_date, $end_date);
+
+        $this->load->view('layout/user_activity', array('user_activity' => $search_result, 'from_date' => $from_date, 'to_date' => $to_date));
+    }  
     
     /**
     * Function to call the curl
