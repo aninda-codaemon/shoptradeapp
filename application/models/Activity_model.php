@@ -16,9 +16,18 @@ class Activity_model extends CI_Model{
 		$this->db->from('user_history uh');
 		$this->db->join('users u', 'u.id = uh.user_id');
 		$this->db->where('uh.store_id', $token);
-		$this->db->where('create_date >=', $start_date);
-		$this->db->where('create_date <=', $end_date);
+		$this->db->where('DATE_FORMAT(create_date, "%Y-%m-%d") >=', $start_date);
+		$this->db->where('DATE_FORMAT(create_date, "%Y-%m-%d") <=', $end_date);
 		return $this->db->get()->result_array();
+	}
+
+	public function get_activity_details_by_id($id){
+		$this->db->select('uh.id, uh.user_id, uh.history_type, uh.history_data, uh.create_date, u.first_name, u.last_name, u.email');
+		$this->db->from('user_history uh');
+		$this->db->join('users u', 'u.id = uh.user_id');
+		$this->db->where('uh.id', $id);
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
 	}
 }
 ?>
