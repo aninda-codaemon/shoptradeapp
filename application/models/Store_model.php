@@ -10,7 +10,7 @@ class Store_model extends CI_Model{
 	}
 	
 	public function get_store_info_by_domain($shop_domain){
-		$this->db->select('id, token as store_id, shop_owner, domain as shop, customer as email, key as access_token');
+		$this->db->select('id, token as store_id, store_name, shop_owner, domain as shop, customer as email, key as access_token');
 		$this->db->from('store');
 		$this->db->where('domain', $shop_domain);
 		$this->db->or_where('myshopify_domain', $shop_domain);

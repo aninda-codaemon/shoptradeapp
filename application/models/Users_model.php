@@ -3,7 +3,7 @@
 class Users_model extends CI_Model{
 
     // Function to get all user's name to send push notificaton.
-    public function getAllUserDetails($token =''){
+    public function getUserDetailsByToken($token =''){
         $this->db->select('id');
         $this->db->select('first_name');
         $this->db->from('users');
@@ -35,15 +35,16 @@ class Users_model extends CI_Model{
         $this->db->insert('notification_records', $noti_data);
         return $this->db->insert_id();
     }
-    
-    //Function to get installed store details to send notification to that store.
-    public function getInstalledStoreDetails($noti_data){
-        $this->db->from('coupon_codes');
-        $this->db->where("Status","Active");
+
+   // Function to get server key of particular store.
+    public function get_store_server_key($token){ 
+	$this->db->select('server_key');
+        $this->db->from('store_server_key');
+        $this->db->where('token', $token);
         $result = $this->db->get();
         return $result->result_array();
     }
-    
+  
 }
 
 ?>

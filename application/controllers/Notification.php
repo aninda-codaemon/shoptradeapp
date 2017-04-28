@@ -8,7 +8,8 @@ class Notification extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->helper('url');
-        $this->load->model('users_model','users');        
+        $this->load->model('users_model','users'); 
+        $this->load->model('store_model', 'store');
     }
     
 
@@ -17,19 +18,25 @@ class Notification extends CI_Controller {
 		
     }
 
-    public function getAllUsers()
+    public function sendNotification()
     { 
-        //Get all users details from database
-	$user_details = $this->users->getAllUserDetails();
-        $data = array();
+        $coupon_details = $this->users->getAllActiveCoupons();
+        //get store info
+        $shop               = $this->session->userdata('shop');
+        $store_details  = $this->store->get_store_info_by_domain($shop);
+        
+	//Get all users details from database
+	//$user_details = $this->users->getUserDetailsByToken('7894561230');
+	$user_details = $this->users->getUserDetailsByToken($store_details['store_id']);
+	
+	$data = array();
         foreach($user_details as $key => $val)
         {	
             $result['id'] = $val['id'];
             $result['userName'] = $val['first_name'];
             $data[] = $result;
         }
-        $coupon_details = $this->users->getAllActiveCoupons();
-        //$store_details  = $this->users->getInstalledStoreDetails();
+        
         
         // On submit set rule and check if validate.
         $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
@@ -42,32 +49,32 @@ class Notification extends CI_Controller {
         //$this->form_validation->set_rules('image', 'Image', 'trim|required');
             
         if (!($this->form_validation->run() == FALSE)) {//form validated 
-            $res = array();
+            $res = array(); 
            $res['lstOffers'] = $this->input->post('lstOffers');
            $res['message'] = $this->input->post('message');
            $res['description'] = $this->input->post('description');
            $res['lstCouponCode'] = $this->input->post('lstCouponCode');
-           $imageName = time() . "_" . $_FILES['image']['name'];;
+           $imageName = time() . "_" . $_FILES['image']['name'];
+		
            $ids = explode(",",$this->input->post("userids")); 
            //file upload code
             if($_FILES){
-            $config['upload_path'] = 'uploads'; 
-            $config['file_name'] = time() . "_" . $_FILES['image']['name'];
-            $config['overwrite'] = TRUE;
-            $config["allowed_types"] = 'jpg|jpeg|png|gif';
-            $this->load->library('upload', $config);
-            $this->upload->do_upload('image');
-            $this->upload->initialize($config);
-            $this->upload->set_allowed_types('*');
-            $this->upload->do_upload('image');
-            
+                $config['upload_path'] = 'uploads'; 
+                $config['file_name'] = time() . "_" . $_FILES['image']['name'];
+                $config['overwrite'] = TRUE;
+                $config["allowed_types"] = 'jpg|jpeg|png|gif';
+                $this->load->library('upload', $config);
+                $this->upload->do_upload('image');
+                $this->upload->initialize($config);
+                $this->upload->set_allowed_types('*');
+                $this->upload->do_upload('image');
             }
-            $user_details = $this->users->getUserDetailsByID($ids);
-            //echo '<pre>'; print_r($user_details); exit;
+            $user_detail = $this->users->getUserDetailsByID($ids);
+            
           
-            if($res['lstOffers'] == '1') //
-            {
-                foreach($user_details as $key => $val)
+            if($res['lstOffers'] == '1') 
+            { 
+                foreach($user_detail as $key => $val)
                 {	
                     //Insert notification record into notification_records table
                     $noti_data = array(
@@ -78,99 +85,22 @@ class Notification extends CI_Controller {
                     'created_date'=> date('Y-m-d'),
                     );
                     $noti_record = $this->users->addNotificationRecord($noti_data);
-
-                    if($val['store_token'] == '5458254512')
-                    {
-                        $server_key = 'AIzaSyD-WdGvAqztwUf3q6Kbll-8u3gV_DL9poQ';
-                        $this->curlCall($server_key,$val,$res,$imageName);
-
-                    }  
-                    else if($val['store_token'] == '7894561230')
-                    { 
-                        $server_key = 'AIzaSyCmEm_us9TAJXJr_FfAXOH5l0dMMGUQbLc';
-                        $this->curlCall($server_key,$val,$res,$imageName);
-                    }   
+		
+		    // Fetch store server key.
+		    $serverKey = $this->users->get_store_server_key($store_details['store_id']);
+		    //$serverKey = $this->users->get_store_server_key('7894561230');
+		    if($serverKey != '')
+		    	$server_key = $serverKey[0]['server_key'];
+			//echo '<pre>'; print_R($server_key); exit;
+                    $this->curlCall($server_key,$val,$res,$imageName);
 
                 }
             }
         }
                 
-        $this->load->view('layout/notification_view', array('userInfo' => $data,'coupon_details' => $coupon_details));
+        $this->load->view('layout/notification_view', array('userInfo' => $data,'coupon_details' => $coupon_details,'store_details'=>$store_details));
      }
-     
-//     public function sendNotification()
-//     {      //echo '<pre>'; print_R($_FILES['image']); exit;
-//           $res = array();
-//           $res['lstOffers'] = $this->input->post('lstOffers');
-//           $res['message'] = $this->input->post('message');
-//           $res['description'] = $this->input->post('description');
-//           $res['lstCouponCode'] = $this->input->post('lstCouponCode');
-//           $imageName = time() . "_" . $_FILES['image']['name'];;
-//           $ids = explode(",",$this->input->post("userids")); 
-//           //Image Upload Code
-//            $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
-//            $this->form_validation->set_rules('lstOffers', 'Offers', 'trim|required');
-//            $this->form_validation->set_rules('lstStores', 'Stores', 'trim|required');
-//            $this->form_validation->set_rules('lstUsers', 'Users', 'trim|required');
-//            $this->form_validation->set_rules('message', 'Message', 'trim|required');
-//            $this->form_validation->set_rules('description', 'Description', 'trim|required');
-//            $this->form_validation->set_rules('lstCouponCode', 'Coupon Code', 'trim|required');
-//            //$this->form_validation->set_rules('image', 'Image', 'trim|required');
-//            
-//        if (!($this->form_validation->run() == FALSE)) {//form validated 
-//            if($_FILES){
-//                //echo 'image'; exit;
-//            $config['upload_path'] = 'uploads'; 
-//            $config['file_name'] = time() . "_" . $_FILES['image']['name'];
-//            $config['overwrite'] = TRUE;
-//            $config["allowed_types"] = 'jpg|jpeg|png|gif';
-////            $config["max_size"] = 1024;
-////            $config["max_width"] = 400;
-////            $config["max_height"] = 400;
-//            //echo '<pre>'; print_r($config); exit;
-//            $this->load->library('upload', $config);
-//            $this->upload->do_upload('image');
-//            $this->upload->initialize($config);
-//            $this->upload->set_allowed_types('*');
-//            $this->upload->do_upload('image');
-//            
-//            }
-//            $user_details = $this->users->getUserDetailsByID($ids);
-//            //echo '<pre>'; print_r($user_details); exit;
-//          
-//            if($res['lstOffers'] == '1') //
-//            {
-//                foreach($user_details as $key => $val)
-//                {	
-//                    //Insert notification record into notification_records table
-//                    $noti_data = array(
-//                    'userID'=> $val['id'],
-//                    'message'=> $res['message'],
-//                    'description'=> $res['description'],
-//                    'images'=> $imageName,
-//                    'created_date'=> date('Y-m-d'),
-//                    );
-//                    $noti_record = $this->users->addNotificationRecord($noti_data);
-//
-//                    if($val['store_token'] == '5458254512')
-//                    {
-//                        $server_key = 'AIzaSyD-WdGvAqztwUf3q6Kbll-8u3gV_DL9poQ';
-//                        $this->curlCall($server_key,$val,$res,$imageName);
-//
-//                    }  
-//                    else if($val['store_token'] == '7894561230')
-//                    { 
-//                        $server_key = 'AIzaSyCmEm_us9TAJXJr_FfAXOH5l0dMMGUQbLc';
-//                        $this->curlCall($server_key,$val,$res,$imageName);
-//                    }   
-//
-//                }
-//            }
-//        }
-//        
-//            
-//        }
-    
+
     public function curlCall($server_key,$val,$res,$imageName)
     { 
         //echo "<pre>"; print_r($val['gcm_reg_token']); 
@@ -230,12 +160,9 @@ class Notification extends CI_Controller {
             if ($result === FALSE) {
                     die('FCM Send Error: ' . curl_error($ch));
             }
-//            else
-//            {
-//                redirect('notification/getAllUsers');
-//            }
+
             curl_close($ch);
-            //return $result;
+            //echo $result;
 	    
     }
     
