@@ -11,32 +11,7 @@ class Notification extends CI_Controller {
         $this->load->model('users_model','users');        
     }
     
-    /**
-    * Function to check the merchant    
-    * preference    
-    **/
-    
-	/**
-	 * get object instance.
-	 *
-	 * @return void
-	 */
-	
-//	public function __construct()
-//	{
-//		 $store = DB::table('store')
-//			->where('token',1234567890)
-//			->first();
-//		$factory = new FactoryClass();
-//		$this->interfaceobj = $factory->getInstance($store->type);
-//		$this->interfaceobj->setStore($store);
-//	}
-	
-	/**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {	
 		
@@ -54,6 +29,7 @@ class Notification extends CI_Controller {
             $data[] = $result;
         }
         $coupon_details = $this->users->getAllActiveCoupons();
+        //$store_details  = $this->users->getInstalledStoreDetails();
         
         // On submit set rule and check if validate.
         $this->form_validation->set_error_delimiters('<div class="error">', '</div>');

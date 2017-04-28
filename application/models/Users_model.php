@@ -36,6 +36,14 @@ class Users_model extends CI_Model{
         return $this->db->insert_id();
     }
     
+    //Function to get installed store details to send notification to that store.
+    public function getInstalledStoreDetails($noti_data){
+        $this->db->from('coupon_codes');
+        $this->db->where("Status","Active");
+        $result = $this->db->get();
+        return $result->result_array();
+    }
+    
 }
 
 ?>
