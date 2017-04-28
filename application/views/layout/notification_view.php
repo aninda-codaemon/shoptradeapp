@@ -1,4 +1,4 @@
-<!DOCTYPE html> <?php //echo "<pre>"; print_r($_SESSION); exit; ?>
+<!DOCTYPE html> <?php //echo "<pre>"; print_r($userInfo); exit; ?>
 <html >
     <head>
         <meta charset="UTF-8">
@@ -36,10 +36,8 @@
                                         <div class="form-group">
                                             <label for="sel1">Store</label>
                                             <select class="form-control" id="lstStores" name="lstStores">
-                                                <option value="">All Store</option>
-                                                <option value="7894561230">Yummy Tummy Store</option>
-                                                <option value="5458254512">Beau Monde Store</option>
-                                            </select>
+                                                <option value="<?= $store_details['store_id'] ?>"><?= $store_details['store_name'] ?></option>
+				            </select>
                                             <?php echo form_error('lstStores'); ?>
                                         </div>
                                     </div>
@@ -158,42 +156,8 @@
                 });
 
             });
-        </script>
-        <script type="text/javascript">
-            var base_url = "<?php echo base_url(); ?>";
-            $("#lstStores").change(function () { 
-                if ($(this).val() == '7894561230') {
-                    var token = '7894561230';
 
-                } else if ($(this).val() == '5458254512')
-                 {
-                     var token = '5458254512';
-                 }
-                 else if ($(this).val() == '')
-                 {
-                     var token = ''; 
-                 }
-                $.ajax({
-                        type: "POST",
-                        dataType: 'json',
-                        url: base_url+'notification/getUserByTokenID',
-                        data: {'token': token},
-                        success: function(response) { // What to do if we succeed
-                            $('#selectStore').find('.multiselect-native-select').remove();
-                            newselect = '<select class="form-control" id="lstUsers" name="lstUsers" multiple="multiple"></select>';
-                            $('#selectStore').append(newselect);
-                            $.each(response, function (index, value) { //alert(value);
-                                $('#lstUsers').append($('<option>').text(value.userName).val(value.id).attr('id',value.id));
-                            });
-                            $('#lstUsers').multiselect({
-                                includeSelectAllOption: true
-                            });
-                         },
-                    })
-
-            });
-
-            $('#btnSelected').click(function () {
+	$('#btnSelected').click(function () {
                 var selected = $("#lstUsers option:selected");
                 var message = "";
                 selected.each(function () {
@@ -203,6 +167,7 @@
                 $('#userids').val(message);
             });
         </script>
+        
         <style>.error{color:red;}</style>
     </body>
 </html>
