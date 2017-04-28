@@ -58,7 +58,7 @@ class Shopify extends CI_Controller {
     * api calls
     **/
     public function get_shopify_merchant_info(){
-        
+                    
         $code               = $this->input->get('code');
         $hmac               = $this->input->get('hmac');
 
@@ -107,7 +107,7 @@ class Shopify extends CI_Controller {
                                     );
             
             ///Redirect to the app dashboard for first time users///    
-            $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";            
+            $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
             redirect($redirect_url, 'location');
             die();
         }        
@@ -122,7 +122,6 @@ class Shopify extends CI_Controller {
         die();*/
             
         $this->user_activity();
-
     }
 
     /**
