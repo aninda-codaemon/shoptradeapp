@@ -30,3 +30,14 @@
         }        
     </style>
 </head>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Shoptradeonline</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="<?php echo base_url().'shopify/get_shopify_merchant_info'; ?>">User Activity</a></li>
+                <li><a href="#">Push Notification</a></li>          
+            </ul>
+        </div>
+    </nav>
