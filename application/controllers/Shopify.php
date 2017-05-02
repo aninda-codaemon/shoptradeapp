@@ -8,6 +8,7 @@ class Shopify extends CI_Controller {
     public $shop;
     public $scope;
     public $api_key;
+    public $_per_page = 10;
 
     public function __construct() {
         parent::__construct();
@@ -138,18 +139,28 @@ class Shopify extends CI_Controller {
     public function user_activity(){
         //echo '<pre>Shop: '.$this->session->userdata('shop');
         //get the shop token access data
+        $page               = 1;
         $shop               = $this->session->userdata('shop');
         $response           = $this->store->get_store_info_by_domain($shop);
         //print_r($response);
 
         //get all the user activity for the store
         $last_wk            = date('Y-m-d', strtotime('-7 days'));
+        $start_date         = '';
+        $end_date           = '';
 
-        $user_activity      = $this->activity->get_user_activity_of_store_by_token($response['store_id'], $last_wk);
+        //get total records        
+        $total_activity     = $this->activity->get_total_user_activity_of_store_by_token($response['store_id'], $last_wk, $start_date, $end_date);        
+        $per_page           = $this->_per_page;
+        $total_page         = floor($total_activity/$per_page);
+        $current_page       = ($page - 1) * $per_page;
+        $next_page          = $page + 1;
+
+        $user_activity      = $this->activity->get_user_activity_of_store_by_token($response['store_id'], $last_wk, $current_page, $per_page);
 
         //print_r($user_activity);
         
-        $this->load->view('layout/user_activity', array('user_activity' => $user_activity));
+        $this->load->view('layout/user_activity', array('user_activity' => $user_activity, 'last_wk' => $last_wk, 'from_date' => $from_date, 'to_date' => $to_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page));
     }
     
     public function activity_details($activity_id){
@@ -199,11 +210,14 @@ class Shopify extends CI_Controller {
     * Method: POST
     **/
     public function search(){
+
+        $page               = 1;
         $shop               = $this->session->userdata('shop');
         $response           = $this->store->get_store_info_by_domain($shop);
         $from_date          = $this->input->post('from_date', true);
         $to_date            = $this->input->post('to_date', true);
 
+        $last_wk            = '';
         $start_date         = date('Y-m-d', strtotime($from_date));
         $end_date           = date('Y-m-d', strtotime($to_date));
 
@@ -213,10 +227,66 @@ class Shopify extends CI_Controller {
             $end_date = $start_date;
         }
 
-        $search_result      = $this->activity->get_user_activity_of_store_by_token_search($response['store_id'], $start_date, $end_date);
+        //get total records        
+        $total_activity     = $this->activity->get_total_user_activity_of_store_by_token($response['store_id'], $last_wk, $start_date, $end_date);        
+        $per_page           = $this->_per_page;
+        $total_page         = floor($total_activity/$per_page);
+        $current_page       = ($page-1)*$per_page;
+        $next_page          = $page + 1;
+        
+        $search_result      = $this->activity->get_user_activity_of_store_by_token_search($response['store_id'], $start_date, $end_date, $current_page, $per_page);
 
-        $this->load->view('layout/user_activity', array('user_activity' => $search_result, 'from_date' => $from_date, 'to_date' => $to_date));
-    }  
+        $this->load->view('layout/user_activity', array('user_activity' => $search_result, 'last_wk' => $last_wk, 'from_date' => $from_date, 'to_date' => $to_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page));
+    }
+
+    public function ajax_get_activity_page(){
+        $page               = $this->input->post('page', true);;
+        $shop               = $this->session->userdata('shop');
+        $response           = $this->store->get_store_info_by_domain($shop);
+        $from_date          = $this->input->post('from_date', true);
+        $to_date            = $this->input->post('to_date', true);
+
+        $last_wk            = $this->input->post('last_wk', true);
+
+        if (empty($last_wk)){
+            $start_date     = date('Y-m-d', strtotime($from_date));
+            $end_date       = date('Y-m-d', strtotime($to_date));
+
+            if ($start_date > $end_date){
+                $tmp        = $end_date;
+                $start_date = $end_date;
+                $end_date   = $start_date;
+            }
+        }else{
+            $start_date     = '';
+            $end_date       = '';
+        }
+        
+        //get total records        
+        $total_activity     = $this->activity->get_total_user_activity_of_store_by_token($response['store_id'], $last_wk, $start_date, $end_date);        
+        $per_page           = $this->_per_page;
+        $total_page         = floor($total_activity/$per_page);
+        $current_page       = ($page-1)*$per_page;
+        $next_page          = $page + 1;        
+        
+        if (empty($last_wk)){
+            $search_result  = $this->activity->get_user_activity_of_store_by_token_search($response['store_id'], $start_date, $end_date, $current_page, $per_page);
+        }else{
+            $search_result  = $this->activity->get_user_activity_of_store_by_token($response['store_id'], $last_wk);
+        }
+
+        $page_data          = $this->load->view('layout/ajax_activity_table_data', array('user_activity' => $search_result, 'last_wk' => $last_wk, 'from_date' => $from_date, 'to_date' => $to_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page), true);   
+
+        $response           = array(
+                                    'total_activity' => $total_activity,
+                                    'total_page' => $total_page,
+                                    'current_page' => $page,
+                                    'next_page' => $next_page,
+                                    'page_data' => $page_data
+                                );
+
+        echo json_encode($response);
+    }
     
     /**
     * Function to call the curl
