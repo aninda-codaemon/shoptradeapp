@@ -179,4 +179,57 @@ class Notification extends CI_Controller {
         echo json_encode($data);
     }
     
+    //function to send push notification to particluar user id
+    public function user_push_notification($user_id)
+    {   
+        //Get the user details
+        $user_detail = $this->users->getUserDetailsByUserID($user_id);
+        //Get all active coupons
+        $coupon_details = $this->users->getAllActiveCoupons();
+        //print_R($coupon_details); exit;
+                
+        //get store info
+        $shop               = $this->session->userdata('shop');
+        $store_details  = $this->store->get_store_info_by_domain($shop);
+        
+        // On submit set rule and check if validate.
+        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_rules('message', 'Message', 'trim|required');
+        $this->form_validation->set_rules('description', 'Description', 'trim|required');
+        $this->form_validation->set_rules('lstCouponCode', 'Coupon Code', 'trim|required');
+                    
+        if (!($this->form_validation->run() == FALSE)) {//form validated 
+           $res = array(); 
+           $user_id = $this->input->post('user_id');
+           $res['message'] = $this->input->post('message');
+           $res['description'] = $this->input->post('description');
+           $res['lstCouponCode'] = $this->input->post('lstCouponCode');
+           $imageName = '';
+           
+           foreach($user_detail as $key => $val)
+            {	
+                //Insert notification record into notification_records table
+                $noti_data = array(
+                'userID'=> $val['id'],
+                'message'=> $res['message'],
+                'description'=> $res['description'],
+                'images'=> $imageName,
+                'created_date'=> date('Y-m-d'),
+                );
+                $noti_record = $this->users->addNotificationRecord($noti_data);
+
+                // Fetch store server key.
+                $serverKey = $this->users->get_store_server_key($store_details['store_id']);
+                //$serverKey = $this->users->get_store_server_key('7894561230');
+                if($serverKey != '')
+                    $server_key = $serverKey[0]['server_key'];
+                    //echo '<pre>'; print_R($server_key); exit;
+                $this->curlCall($server_key,$val,$res,$imageName);
+
+            }
+           
+        }
+        $this->load->view('layout/user_notification_view', array('user_details'=>$user_detail[0], 'coupon_codes'=>$coupon_details));
+    }
+
 }

@@ -6,7 +6,8 @@
         <div class="col-md-12">
             <div>
                 <h3 class="product-title col-md-10">User History Product Details</h3>
-                <button class="btn btn-custom pull-right" type="submit">Push</button>
+                <!--<button class="btn btn-custom pull-right" type="submit">Push</button>-->
+                <a href="<?php echo base_url().'notification/user_push_notification/'.$activity_details['user_id']; ?>" class="btn btn-custom pull-right" >Push</a>
             </div>
         </div>
         <div class="clearfix"></div>

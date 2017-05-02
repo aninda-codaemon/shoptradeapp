@@ -65,7 +65,7 @@
         <td>
             <a class="btn btn-info" href="<?php echo base_url().'shopify/activity_details/'.$ua['id']; ?>" >Details</a>
             <!--<button class="btn btn-info" type="button" onclick="" >Details</button>-->
-            <a href="#" class="btn btn-custom" >Push</a>
+            <a href="<?php echo base_url().'notification/user_push_notification/'.$ua['user_id']; ?>" class="btn btn-custom" >Push</a>
         </td>
     </tr>
     <?php
