@@ -186,7 +186,7 @@ class Shopify extends CI_Controller {
         
         //Shopify client call to fetch product info
         $sc_shop            = new ShopifyClient($shop, $response['access_token'], $api_key, $api_secret);
-        print_r($sc_shop);print_r($product_ids);
+        
         $product_info       = $sc_shop->call('GET', '/admin/products.json?ids='.$product_ids);      
         
         $this->load->view('layout/user_activity_details', array('activity_details' => $activity_details, 'product_info' => $product_info));
