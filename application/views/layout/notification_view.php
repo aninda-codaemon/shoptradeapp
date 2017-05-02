@@ -1,15 +1,8 @@
-<!DOCTYPE html> <?php //echo "<pre>"; print_r($userInfo); exit; ?>
-<html >
-    <head>
-        <meta charset="UTF-8">
-        <title> Push Notification</title>
-        <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-        <link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css"
-              rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="<?php echo base_url(); ?>public/css/style.css">
+<?php $this->load->view('common/header') ?>
 
-    </head>
+<link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css"
+              rel="stylesheet" type="text/css" />
+       
     <body>
         
         <div class="container">
@@ -17,7 +10,7 @@
                 <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-bell" aria-hidden="true"></i>Push Notification</h3>
+                            <h3 class="panel-title"><i class="fa fa-bell" aria-hidden="true"></i>Send Push Notification</h3>
                         </div>
                         <div class="panel-body">
                             <form role="form" action="" method="post" enctype="multipart/form-data">
