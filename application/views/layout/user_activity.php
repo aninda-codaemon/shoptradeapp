@@ -5,7 +5,7 @@
 		<div class="row centered-form">
     <div>
         <div class="col-lg-6"><h3 class="margin-0 product-title">User History For Last 7 Day</h3></div>
-        <form id="search_acitvity_frm" class="form-inline" method="POST" action="/shopify/search" >
+        <form id="search_acitvity_frm" class="form-inline" method="POST" action="<?php echo base_url() ?>shopify/search" >
             <div class="form-group col-lg-6 pull-right">
                 <div class="col-lg-5">
                     <input value="<?php echo (isset($from_date)?$from_date:''); ?>" type="text" id="from_date" name="from_date" class="search form-control" placeholder="Start Date" >
