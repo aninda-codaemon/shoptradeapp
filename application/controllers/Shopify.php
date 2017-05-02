@@ -77,6 +77,13 @@ class Shopify extends CI_Controller {
         $shopifyClient      = new ShopifyClient($shop, "", $api_key, $api_secret);
         $access_data        = $shopifyClient->getAccessToken($code);
 
+        /*echo '<pre>';
+        print_r($_GET);
+        print_r($this->config->item('shopify_api_key'). ' ' . $this->config->item('shopify_api_key'));
+        print_r($shopifyClient);
+        print_r($access_data);
+        die();*/
+
         if ($store_exist > 0){
             
             //update the access token
@@ -154,8 +161,8 @@ class Shopify extends CI_Controller {
         //get activity details
         $activity_details   = $this->activity->get_activity_details_by_id($activity_id);
 
-        echo '<pre>';
-        print_r($response);
+        //echo '<pre>';
+        //print_r($response);
         //print_r(json_decode(unserialize($activity_details['history_data'])));
         
         $product_data       = json_decode(unserialize($activity_details['history_data']));
