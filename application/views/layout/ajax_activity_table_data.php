@@ -63,7 +63,7 @@
 
         <nav aria-label="Page navigation example">
             <?php
-                echo 'total_page: '.$total_page.'  current_page: '.$current_page.'  next_page: '.$next_page;
+                //echo 'total_page: '.$total_page.'  current_page: '.$current_page.'  next_page: '.$next_page;
             ?>
 
             <?php

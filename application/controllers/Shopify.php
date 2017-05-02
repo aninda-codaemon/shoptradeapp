@@ -160,7 +160,7 @@ class Shopify extends CI_Controller {
 
         //print_r($user_activity);
         
-        $this->load->view('layout/user_activity', array('user_activity' => $user_activity, 'last_wk' => $last_wk, 'from_date' => $from_date, 'to_date' => $to_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page));
+        $this->load->view('layout/user_activity', array('user_activity' => $user_activity, 'last_wk' => $last_wk, 'from_date' => $start_date, 'to_date' => $end_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page));
     }
     
     public function activity_details($activity_id){
