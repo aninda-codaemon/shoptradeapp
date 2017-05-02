@@ -44,6 +44,14 @@ class Users_model extends CI_Model{
         $result = $this->db->get();
         return $result->result_array();
     }
+    
+    // Function to get user details by id.
+    public function getUserDetailsByUserID($ids){
+        $this->db->from('users');
+        $this->db->where('id', $ids);
+        $result = $this->db->get();
+        return $result->result_array();
+    }
   
 }
 
