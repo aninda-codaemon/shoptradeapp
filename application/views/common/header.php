@@ -36,8 +36,8 @@
                 <a class="navbar-brand" href="#">Shoptradeonline</a>
             </div>
             <ul class="nav navbar-nav">
-                <li class="<?php if($this->uri->segment(3)=="shopify"){echo "active";}?>"><a href="<?php echo base_url().'shopify/get_shopify_merchant_info'; ?>">User Activity</a></li>
-                <li class="<?php if($this->uri->segment(3)=="notification"){echo "active";}?>"><a href="<?php echo base_url().'notification/sendNotification'; ?>">Push Notification</a></li>          
+                <li class="<?php if($this->uri->segment(1)=="shopify"){echo "active";}?>"><a href="<?php echo base_url().'shopify/get_shopify_merchant_info'; ?>">User Activity</a></li>
+                <li class="<?php if($this->uri->segment(1)=="notification"){echo "active";}?>"><a href="<?php echo base_url().'notification/sendNotification'; ?>">Push Notification</a></li>          
             </ul>
         </div>
     </nav>
