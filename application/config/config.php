@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://shoptradeapp.local/';
+$config['base_url'] = 'http://52.87.171.80/shoptradeapp/';
 
 /*
 |--------------------------------------------------------------------------
@@ -533,5 +533,5 @@ $config['proxy_ips'] = '';
 */
 $config['shopify_auth_url'] = 'shopify/get_shopify_merchant_info';
 
-$config['shopify_api_key'] = 'e2219d466c1d5b026cc69f7191efa29d';
-$config['shopify_api_secret'] = 'ccc9a6058858bae5b93f30c4800fd924';
+$config['shopify_api_key'] = '2a46b44486b48867f2cacba5796574f8';
+$config['shopify_api_secret'] = 'e5c65b2a7ce83307af75401b422c2f56';

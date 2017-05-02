@@ -154,17 +154,14 @@ class Shopify extends CI_Controller {
         //get activity details
         $activity_details   = $this->activity->get_activity_details_by_id($activity_id);
 
-        //echo '<pre>';
-        //print_r($activity_details);
+        echo '<pre>';
+        print_r($response);
         //print_r(json_decode(unserialize($activity_details['history_data'])));
-
+        
         $product_data       = json_decode(unserialize($activity_details['history_data']));
         $product_details    = array();
         $product_ids        = '';
-
-        //Shopify client call to fetch product info
-        $sc_shop            = new ShopifyClient($shop, $response['access_token'], $api_key, $api_secret);
-
+        
         if (is_array($product_data)){
             
             foreach ($product_data as $value) {
@@ -175,12 +172,15 @@ class Shopify extends CI_Controller {
 
                 $product_ids .= $value;                
             }
-            
+
         }else{            
             $product_ids    = $product_data;
-        }        
+        }
         
-        $product_info       = $sc_shop->call('GET', '/admin/products.json?ids='.$product_ids);        
+        //Shopify client call to fetch product info
+        $sc_shop            = new ShopifyClient($shop, $response['access_token'], $api_key, $api_secret);
+        print_r($sc_shop);print_r($product_ids);
+        $product_info       = $sc_shop->call('GET', '/admin/products.json?ids='.$product_ids);      
         
         $this->load->view('layout/user_activity_details', array('activity_details' => $activity_details, 'product_info' => $product_info));
     }
