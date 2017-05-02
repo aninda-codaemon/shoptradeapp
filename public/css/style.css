@@ -12,11 +12,6 @@
   color:#ccc;
 }
 
-
-
-
-
-
 img {
   max-width: 100%; }
 
@@ -159,26 +154,26 @@ img {
 
 
 .centered-form{
-	margin-top: 60px;
+  margin-top: 60px;
 }
 
 .centered-form .panel{
-	background: rgba(255, 255, 255, 0.8);
-	box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
 }
 .btn-custom, .btn-custom:hover, .btn-custom:focus, .btn-custom:active  {
     background-color: #42bcb7;
     
     transition: all 0.5s ease-in-out 0s;
-	color: #fff;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	font-weight: bold;
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 
 
-		.btn-file {
+    .btn-file {
     position: relative;
     overflow: hidden;
 }
@@ -201,17 +196,19 @@ img {
 #img-upload{
     width: 100%;
 }
-		.multiselect  {
-			//width: 200%;
-		}
-		.btn-custom, .btn-custom:hover, .btn-custom:focus, .btn-custom:active  {
+
+    .multiselect  {
+      width: 200%;
+    }
+    .btn-custom, .btn-custom:hover, .btn-custom:focus, .btn-custom:active  {
+
     background-color: #42bcb7;
    
     transition: all 0.5s ease-in-out 0s;
-	color: #fff;
-			letter-spacing: 1px;
-	text-transform: uppercase;
-			font-weight: bold;
+  color: #fff;
+      letter-spacing: 1px;
+  text-transform: uppercase;
+      font-weight: bold;
 }
  .padding-0{
             padding: 0;
@@ -224,4 +221,27 @@ img {
             padding: 15px;
             border-radius: 5px;
             background: #FFF;
+        }
+
+
+/*MOUSUMI*/
+.padding-0{
+            padding: 0;
+        }
+        .margin-0{
+            margin: 0;
+        }
+        .margin-T-10{
+            margin-top:10px;
+        }
+        .margin-B-10{
+            margin-bottom:10px;
+        }
+        .page-bg{
+            color: #fff!important;
+            background: #42bcb7!important;
+            border: none!important;
+        }
+        #top-space{
+            margin-top: 30px;
         }
