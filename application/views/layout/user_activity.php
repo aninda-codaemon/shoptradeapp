@@ -3,20 +3,39 @@
 <body>
     <div class="container">
 		<div class="row centered-form">
+    <!-- Search Functionality & Header -->
+    
     <div>
-        <div class="col-lg-6"><h3 class="margin-0 product-title">User History For Last 7 Day</h3></div>
-        <form id="search_acitvity_frm" class="form-inline" method="POST" action="<?php echo base_url() ?>shopify/search" >
-            <div class="form-group col-lg-6 pull-right">
-                <div class="col-lg-5">
-                    <input value="<?php echo (isset($from_date)?$from_date:''); ?>" type="text" id="from_date" name="from_date" class="search form-control" placeholder="Start Date" >
+        <div class="col-lg-6 col-md-6 padding-0">
+            <h3 class="margin-0 product-title">
+                <?php
+                    if (!isset($app_title)){
+                ?>
+                User Activity For Last 30 Day
+                <?php
+                    }else{
+                        echo $app_title;
+                    }
+                ?>
+            </h3>
+        </div>
+
+        <div class="col-md-6 col-lg-6 padding-0">
+            <form id="search_acitvity_frm" class="form-inline" method="POST" action="<?php echo base_url(); ?>shopify/search">
+                
+                <div class="col-lg-12 col-md-12 text-right padding-0">
+                    <input id="from_date" name="from_date" class="search form-control hasDatepicker" placeholder="Start Date" type="text" value="<?php echo (isset($from_date)?$from_date:''); ?>" >
+
+                    <input id="to_date" name="to_date" class="search form-control hasDatepicker" placeholder="End Date" type="text" value="<?php echo (isset($to_date)?$to_date:''); ?>" >
+                    
+                    <button class="btn btn-custom pull-right" type="button" id="search_btn" style="margin-left: 5px;">Submit</button>                    
                 </div>
-                <div class="col-lg-5">
-                    <input value="<?php echo (isset($to_date)?$to_date:''); ?>" type="text" id="to_date" name="to_date" class="search form-control" placeholder="End Date" >
-                </div>
-                <button class="btn btn-custom pull-right" type="button" id="search_btn">Submit</button>
-            </div>
-        </form>
+                
+            </form>
+        </div>
     </div>
+    <!-- Search Functionality & Header -->
+
 <span class="counter pull-right"></span>
 
 <div id="activity_data_container" >
@@ -25,9 +44,9 @@
         <tr>
             <th class="col-md-1 col-xs-5">First Name</th>
             <th class="col-md-1 col-xs-5">Last Name</th>
-            <th class="col-md-4 col-xs-4">Email</th>
+            <th class="col-md-3 col-xs-4">Email</th>
             <th class="col-md-3 col-xs-3">Page</th>
-            <th class="col-md-1 col-xs-3">Date</th>
+            <th class="col-md-2 col-xs-3">Date</th>
             <th class="col-md-2 col-xs-3">Action</th>
         </tr>    
       </thead>
@@ -42,7 +61,7 @@
 
         <?php
             if (!empty($user_activity)){
-                foreach ($user_activity as $ua) {                
+                foreach ($user_activity as $ua) {                    
         ?>
         <tr>
             <td><?php echo $ua['first_name']; ?></td>
@@ -65,23 +84,13 @@
             </td>
             <td><?php echo date('d-m-Y', strtotime($ua['create_date'])); ?></td>
             <td>
-                <a class="btn btn-info" href="<?php echo base_url().'shopify/activity_details/'.$ua['id']; ?>" >Details</a>
+                <a class="btn btn-info custom-btn" href="<?php echo base_url().'shopify/activity_details/'.$ua['id']; ?>" >Details</a>
                 <!--<button class="btn btn-info" type="button" onclick="" >Details</button>-->
-                <a href="#" class="btn btn-custom" >Push</a>
+                <a href="<?php echo base_url().'notification/user_push_notification/'.$ua['user_id']; ?>" class="btn btn-custom custom-btn" >Push</a>
             </td>
         </tr>
         <?php
-                }
-            ?>
-        </td>
-        <td><?php echo date('d-m-Y', strtotime($ua['create_date'])); ?></td>
-        <td>
-            <a class="btn btn-info" href="<?php echo base_url().'shopify/activity_details/'.$ua['id']; ?>" >Details</a>
-            <!--<button class="btn btn-info" type="button" onclick="" >Details</button>-->
-            <a href="<?php echo base_url().'notification/user_push_notification/'.$ua['user_id']; ?>" class="btn btn-custom" >Push</a>
-        </td>
-    </tr>
-    <?php
+                }            
             }
         ?>
         

@@ -119,16 +119,7 @@ class Shopify extends CI_Controller {
             redirect($redirect_url, 'location');
             die();
         }        
-        
-        //Shopify client call to fetch merchant info
-        $sc_shop            = new ShopifyClient($response['shop'], $response['access_token'], $api_key, $api_secret);
-
-        // Get shop info
-        //$orders             = $sc_shop->call('GET', '/admin/orders.json?status=any');        
-        /*echo '<pre>';
-        print_r($orders);
-        die();*/
-            
+                    
         $this->user_activity();
     }
 
@@ -145,7 +136,7 @@ class Shopify extends CI_Controller {
         //print_r($response);
 
         //get all the user activity for the store
-        $last_wk            = date('Y-m-d', strtotime('-7 days'));
+        $last_wk            = date('Y-m-d', strtotime('-30 days'));
         $start_date         = '';
         $end_date           = '';
 
@@ -163,6 +154,14 @@ class Shopify extends CI_Controller {
         $this->load->view('layout/user_activity', array('user_activity' => $user_activity, 'last_wk' => $last_wk, 'from_date' => $start_date, 'to_date' => $end_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page));
     }
     
+    /**
+    * Function to display the activity
+    * details for a user activity
+    * Method: GET
+    * Params:
+    * $activity_id : Activity ID of 
+    * user activity
+    **/
     public function activity_details($activity_id){
         $shop               = $this->session->userdata('shop');
         $response           = $this->store->get_store_info_by_domain($shop);
@@ -236,9 +235,14 @@ class Shopify extends CI_Controller {
         
         $search_result      = $this->activity->get_user_activity_of_store_by_token_search($response['store_id'], $start_date, $end_date, $current_page, $per_page);
 
-        $this->load->view('layout/user_activity', array('user_activity' => $search_result, 'last_wk' => $last_wk, 'from_date' => $from_date, 'to_date' => $to_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page));
+        $this->load->view('layout/user_activity', array('user_activity' => $search_result, 'last_wk' => $last_wk, 'from_date' => $from_date, 'to_date' => $to_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page, 'app_title' => 'Search User Activity For A Date Range'));
     }
 
+    /**
+    * Function to get the pages for
+    * 
+    * Method: POST
+    **/
     public function ajax_get_activity_page(){
         $page               = $this->input->post('page', true);;
         $shop               = $this->session->userdata('shop');
@@ -272,7 +276,7 @@ class Shopify extends CI_Controller {
         if (empty($last_wk)){
             $search_result  = $this->activity->get_user_activity_of_store_by_token_search($response['store_id'], $start_date, $end_date, $current_page, $per_page);
         }else{
-            $search_result  = $this->activity->get_user_activity_of_store_by_token($response['store_id'], $last_wk);
+            $search_result  = $this->activity->get_user_activity_of_store_by_token($response['store_id'], $last_wk, $current_page, $per_page);
         }
 
         $page_data          = $this->load->view('layout/ajax_activity_table_data', array('user_activity' => $search_result, 'last_wk' => $last_wk, 'from_date' => $from_date, 'to_date' => $to_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page), true);   

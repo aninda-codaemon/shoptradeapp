@@ -245,3 +245,11 @@ img {
         #top-space{
             margin-top: 30px;
         }
+
+        .custom-btn{
+            padding: 4px 8px !important;
+        }
+
+        .margin-L-20{
+            margin-left:25px!important;
+        }
