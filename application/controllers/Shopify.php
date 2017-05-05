@@ -112,7 +112,7 @@ class Shopify extends CI_Controller {
             
             //save shop info
             $result             = $this->store->save_store_info($shop_info);
-
+            
             $response           = array(
                                         'shop' => $shop_info['domain'],
                                         'store_id' => $shop_info['id'],
@@ -122,11 +122,22 @@ class Shopify extends CI_Controller {
                                     );
 
             $this->register_uninstall_webhook();
-
-            ///Redirect to the app dashboard for first time users///    
-            $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
-            redirect($redirect_url, 'location');
-            die();
+            
+            $app_status = $this->store->get_store_app_info($result);
+		print_r($app_status); die;
+            if($status == 'app_installed')
+            {
+                $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
+                redirect($redirect_url, 'location');
+                die();
+            }
+            else if($status == 'build_sent')
+            {
+                ///Redirect to the app dashboard for first time users///    
+                $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
+                redirect($redirect_url, 'location');
+                die();
+            }
         }
 
         $this->user_activity();
