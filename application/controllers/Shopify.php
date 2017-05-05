@@ -80,22 +80,26 @@ class Shopify extends CI_Controller {
         $shopifyClient      = new ShopifyClient($shop, "", $api_key, $api_secret);
         $access_data        = $shopifyClient->getAccessToken($code);
 
-        /*echo '<pre>';
-        print_r($_GET);
-        print_r($this->config->item('shopify_api_key'). ' ' . $this->config->item('shopify_api_key'));
-        print_r($shopifyClient);
-        print_r($access_data);
-        die();*/
-
         if ($store_exist > 0){
-            
+            //get the shop token access data
+            $response           = $this->store->get_store_info_by_domain($shop);
+
             //update the access token
-            $dataArray          = array('key' => $access_data['access_token']);
+            $dataArray          = array('key' => $access_data['access_token'], 'app_status' => '1');
             $this->store->update_store_info($shop, $dataArray);
 
             //get the shop token access data
             $response           = $this->store->get_store_info_by_domain($shop);
             //$this->register_uninstall_webhook();
+
+            if ($response['app_status'] == '0'){
+                $this->register_uninstall_webhook();
+
+                ///Redirect to the app dashboard for first time users///    
+                $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
+                redirect($redirect_url, 'location');
+                die();
+            }
 
         }else{
             
@@ -128,6 +132,11 @@ class Shopify extends CI_Controller {
         $this->user_activity();
     }
 
+    /**
+    * Funtion to register a webhook in app store
+    * to notify if the customer has uninstalled our
+    * app or not
+    **/
     public function register_uninstall_webhook(){
         $api_key            = $this->config->item('shopify_api_key');
         $api_secret         = $this->config->item('shopify_api_secret');
@@ -177,6 +186,10 @@ class Shopify extends CI_Controller {
         }        
     }
 
+    /**
+    * Funstion will receive a notification
+    * if a customer has uninstalled a app
+    **/
     public function handleAppUninstall(){
         
         $body               = file_get_contents("php://input");
@@ -188,23 +201,14 @@ class Shopify extends CI_Controller {
         $response           = $this->store->get_store_info_by_domain($domain);
 
         if (!empty($response)){
-            //delete the store listing from store table
-            $result         = $this->store->delete_store_entry_by_domain($domain);
+            //update the store listing from store table
+            $result         = $this->store->update_store_entry_by_domain($domain, '0');
 
             echo 1;
         }else{
             echo 0;
         }
-
-        if (!file_put_contents('./webhook.txt', $body))
-        {
-                echo 'Unable to write the file';
-        }
-        else
-        {
-                echo 'File written!';
-        }
-
+        
     }
 
     /**
