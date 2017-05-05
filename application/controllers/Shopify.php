@@ -213,13 +213,18 @@ class Shopify extends CI_Controller {
 
         if (!empty($response)){
             //update the store listing from store table
-            $result         = $this->store->update_store_entry_by_domain($domain, '0');
+            $result         = $this->store->update_store_entry_by_domain($domain, 0);
 
             echo 1;
         }else{
             echo 0;
         }
-        
+
+        if (!file_put_contents('./webhook.txt', $body)){
+            echo 'File could not be written';
+        }else{
+            echo 'File written';
+        }
     }
 
     /**
