@@ -20,18 +20,19 @@
             </h3>
         </div>
 
-        <div class="col-md-6 col-lg-6 padding-0">
-            <form id="search_acitvity_frm" class="form-inline" method="POST" action="<?php echo base_url(); ?>shopify/search">
-                
-                <div class="col-lg-12 col-md-12 text-right padding-0">
-                    <input id="from_date" name="from_date" class="search form-control hasDatepicker" placeholder="Start Date" type="text" value="<?php echo (isset($from_date)?$from_date:''); ?>" >
-
-                    <input id="to_date" name="to_date" class="search form-control hasDatepicker" placeholder="End Date" type="text" value="<?php echo (isset($to_date)?$to_date:''); ?>" >
-                    
-                    <button class="btn btn-custom pull-right" type="button" id="search_btn" style="margin-left: 5px;">Submit</button>                    
+        <div class="col-md-12 col-lg-12 padding-0">
+            <form class="form-inline pull-right" id="search_acitvity_frm" method="POST" action="<?php echo base_url(); ?>shopify/search" >
+                <div class="form-group">               
+                    <input class="form-control" id="from_date" name="from_date" placeholder="Start Date" type="text" value="<?php echo (isset($from_date)?$from_date:''); ?>" >
                 </div>
+                <div class="form-group">
                 
+                    <input class="form-control" id="to_date" name="to_date" placeholder="End Date" type="text" value="<?php echo (isset($to_date)?$to_date:''); ?>" >
+                </div>
+
+               <button type="button" class="btn btn-custom" id="search_btn" >Submit</button>
             </form>
+
         </div>
     </div>
     <!-- Search Functionality & Header -->

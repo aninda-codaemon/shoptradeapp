@@ -49,6 +49,8 @@ class Shopify extends CI_Controller {
         $auth_url       = base_url() . $this->config->item('shopify_auth_url');
         
         ///// redirect to authorize url /////        
+        //echo $shopifyClient->getAuthorizeUrl($scope, $auth_url, ' '); die();
+
         redirect($shopifyClient->getAuthorizeUrl($scope, $auth_url, ' '), 'location');        
         exit;        
     }
@@ -93,6 +95,7 @@ class Shopify extends CI_Controller {
 
             //get the shop token access data
             $response           = $this->store->get_store_info_by_domain($shop);
+            //$this->register_uninstall_webhook();
 
         }else{
             
@@ -113,14 +116,95 @@ class Shopify extends CI_Controller {
                                         'email' => $shop_info['email'],
                                         'shop_owner' => $shop_info['shop_owner']
                                     );
-            
+
+            $this->register_uninstall_webhook();
+
             ///Redirect to the app dashboard for first time users///    
             $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
             redirect($redirect_url, 'location');
             die();
-        }        
-                    
+        }
+
         $this->user_activity();
+    }
+
+    public function register_uninstall_webhook(){
+        $api_key            = $this->config->item('shopify_api_key');
+        $api_secret         = $this->config->item('shopify_api_secret');
+        $shop               = $this->session->userdata('shop');
+        $response           = $this->store->get_store_info_by_domain($shop);
+        $access_token       = $response['access_token'];
+
+        $url                = 'https://' . $shop . '/admin/webhooks.json';
+        $dataArray          = array(
+                                    'webhook' => array(
+                                            'topic' => 'app/uninstalled',
+                                            'address' => base_url().'shopify/handleAppUninstall',
+                                            'format' => 'json'
+                                        )
+                                );
+
+        $params             = '{"webhook": {
+                                "topic": "app/uninstalled",
+                                "address": base_url()."users/setShopifyUninstall",
+                                "format": "json"
+                                }}';
+        
+        //Curl call to register web hook                                
+        $session            = curl_init();
+
+        curl_setopt($session, CURLOPT_URL, $url);
+        curl_setopt($session, CURLOPT_POST, 1);
+        // Tell curl that this is the body of the POST
+        curl_setopt($session, CURLOPT_POSTFIELDS, json_encode($dataArray));
+        curl_setopt($session, CURLOPT_HEADER, false);
+        curl_setopt($session, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Content-Type: application/json', 'X-Shopify-Access-Token: '.$access_token));
+        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+        if(preg_match("/^(https)/", $url)) {
+            curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
+        }
+
+        $response               = curl_exec($session);
+        curl_close($session);
+
+        $body                   = json_decode($response);
+
+        if($body){
+            return $body;
+        }else{
+            return '0';
+        }        
+    }
+
+    public function handleAppUninstall(){
+        
+        $body               = file_get_contents("php://input");
+        //$body = 'Test file';
+        //$body = json_encode($_REQUEST);
+        $body               = json_decode($body, true);
+        
+        $domain             = $body['domain'];
+        $response           = $this->store->get_store_info_by_domain($domain);
+
+        if (!empty($response)){
+            //delete the store listing from store table
+            $result         = $this->store->delete_store_entry_by_domain($domain);
+
+            echo 1;
+        }else{
+            echo 0;
+        }
+
+        if (!file_put_contents('./webhook.txt', $body))
+        {
+                echo 'Unable to write the file';
+        }
+        else
+        {
+                echo 'File written!';
+        }
+
     }
 
     /**

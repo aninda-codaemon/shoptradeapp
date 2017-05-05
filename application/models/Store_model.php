@@ -42,6 +42,17 @@ class Store_model extends CI_Model{
 		return 1;
 	}
 	
+	public function delete_store_entry_by_domain($shop_domain){		
+		$this->db->where('domain', $shop_domain);
+		//$this->db->or_where('myshopify_domain', $shop_domain);
+		$this->db->delete('store');
+		
+		if (empty($this->db->error())){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
 }
 
 ?>
