@@ -55,7 +55,7 @@ class Store_model extends CI_Model{
 		}
 	}
         
-        public function get_store_app_info($store_id){
+        public function get_store_app_install_status_info($store_id){
 		$this->db->select('install_status');
 		$this->db->from('store');
 		$this->db->where('id', $store_id);
