@@ -91,7 +91,7 @@ class Shopify extends CI_Controller {
             //get the shop token access data
             $response           = $this->store->get_store_info_by_domain($shop);
             //$this->register_uninstall_webhook();
-
+            
             if ($response['app_status'] == '0'){
                 $this->register_uninstall_webhook();
 
