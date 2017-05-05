@@ -29,6 +29,7 @@ class Store_model extends CI_Model{
 					'myshopify_domain' => $shop_info['myshopify_domain'],
 					'iana_timezone' => $shop_info['iana_timezone'],
 					'key' => $shop_info['tokens']['access_token'],
+                                        'install_status' => 'app_installed',
 					'data_dump' => serialize(json_encode($shop_info))
 				);
 
