@@ -44,9 +44,8 @@ class Store_model extends CI_Model{
 	}
 	
 	public function update_store_entry_by_domain($shop_domain, $status){		
-		$this->db->where('domain', $shop_domain);
-		//$this->db->or_where('myshopify_domain', $shop_domain);
-		$this->db->update('store', array('app_status', $status));
+		//$this->db->delete('store', array('domain' => $shop_domain));
+		$this->db->update('store', array('app_status', $status), array('domain' => $shop_domain));
 		
 		if (empty($this->db->error())){
 			return 1;
