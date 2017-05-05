@@ -123,21 +123,10 @@ class Shopify extends CI_Controller {
 
             $this->register_uninstall_webhook();
             
-            $app_status = $this->store->get_store_app_install_status_info($result);
-		print_r($app_status); die;
-            if($status == 'app_installed')
-            {
-                $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
-                redirect($redirect_url, 'location');
-                die();
-            }
-            else if($status == 'build_sent')
-            {
-                ///Redirect to the app dashboard for first time users///    
-                $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
-                redirect($redirect_url, 'location');
-                die();
-            }
+            $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
+            redirect($redirect_url, 'location');
+            die();
+           
         }
 
         $this->user_activity();
@@ -232,30 +221,41 @@ class Shopify extends CI_Controller {
     * activities for last 7 days
     **/
     public function user_activity(){
+        
         //echo '<pre>Shop: '.$this->session->userdata('shop');
         //get the shop token access data
         $page               = 1;
         $shop               = $this->session->userdata('shop');
         $response           = $this->store->get_store_info_by_domain($shop);
         //print_r($response);
-
-        //get all the user activity for the store
-        $last_wk            = date('Y-m-d', strtotime('-30 days'));
-        $start_date         = '';
-        $end_date           = '';
-
-        //get total records        
-        $total_activity     = $this->activity->get_total_user_activity_of_store_by_token($response['store_id'], $last_wk, $start_date, $end_date);        
-        $per_page           = $this->_per_page;
-        $total_page         = floor($total_activity/$per_page);
-        $current_page       = ($page - 1) * $per_page;
-        $next_page          = $page + 1;
-
-        $user_activity      = $this->activity->get_user_activity_of_store_by_token($response['store_id'], $last_wk, $current_page, $per_page);
-
-        //print_r($user_activity);
         
-        $this->load->view('layout/user_activity', array('user_activity' => $user_activity, 'last_wk' => $last_wk, 'from_date' => $start_date, 'to_date' => $end_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page));
+        //if status is app_installed show welcome view.
+        if($response['install_status'] == 'app_installed')
+        {
+            $this->load->view('layout/user_welcome');
+        }
+        //if status is build_sent show activity view.
+        else if($response['install_status'] == 'build_sent')
+        {
+            //get all the user activity for the store
+            $last_wk            = date('Y-m-d', strtotime('-30 days'));
+            $start_date         = '';
+            $end_date           = '';
+
+            //get total records        
+            $total_activity     = $this->activity->get_total_user_activity_of_store_by_token($response['store_id'], $last_wk, $start_date, $end_date);        
+            $per_page           = $this->_per_page;
+            $total_page         = floor($total_activity/$per_page);
+            $current_page       = ($page - 1) * $per_page;
+            $next_page          = $page + 1;
+
+            $user_activity      = $this->activity->get_user_activity_of_store_by_token($response['store_id'], $last_wk, $current_page, $per_page);
+
+            //print_r($user_activity);
+
+            $this->load->view('layout/user_activity', array('user_activity' => $user_activity, 'last_wk' => $last_wk, 'from_date' => $start_date, 'to_date' => $end_date, 'total_page' => $total_page, 'current_page' => $page, 'next_page' => $next_page));
+        }
+            
     }
     
     /**
