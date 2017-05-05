@@ -123,7 +123,7 @@ class Shopify extends CI_Controller {
 
             $this->register_uninstall_webhook();
             
-            $app_status = $this->store->get_store_app_info($result);
+            $app_status = $this->store->get_store_app_install_status_info($result);
 		print_r($app_status); die;
             if($status == 'app_installed')
             {
