@@ -227,7 +227,7 @@ class Shopify extends CI_Controller {
         $page               = 1;
         $shop               = $this->session->userdata('shop');
         $response           = $this->store->get_store_info_by_domain($shop);
-        //print_r($response);
+        //print_r($response); exit;
         
         //if status is app_installed show welcome view.
         if($response['install_status'] == 'app_installed')
