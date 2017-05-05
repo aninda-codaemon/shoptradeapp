@@ -11,7 +11,7 @@
                 <?php
                     if (!isset($app_title)){
                 ?>
-                User Activity For Last 30 Day
+                User Activity For Last 301 Day
                 <?php
                     }else{
                         echo $app_title;
