@@ -54,6 +54,13 @@ class Store_model extends CI_Model{
 			return 0;
 		}
 	}
+        
+        public function get_store_app_info($store_id){
+		$this->db->select('install_status');
+		$this->db->from('store');
+		$this->db->where('id', $store_id);
+		return $this->db->get()->row_array();
+	}
 }
 
 ?>
