@@ -34,7 +34,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Shoptradeonline</a>
+                <a class="navbar-brand" href="<?php echo base_url().'shopify/dashboard'; ?>">Shoptradeonline</a>
             </div>
             <ul class="nav navbar-nav">
                 <li class="<?php if($this->uri->segment(1)=="shopify"){echo "active";}?>"><a href="<?php echo base_url().'shopify/user_activity'; ?>">User Activity</a></li>

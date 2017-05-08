@@ -11,7 +11,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Shoptradeonline</a>
+                <a class="navbar-brand" href="<?php echo base_url().'shopify/dashboard'; ?>">Shoptradeonline</a>
             </div>
          </div>
     </nav>

@@ -47,6 +47,16 @@ class Activity_model extends CI_Model{
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+        
+        public function get_activity_details_by_store_id($id,$activity){
+                $string = "'".$activity."'"; 
+		$this->db->select('id, user_id, history_type, history_data');
+		$this->db->from('user_history');
+		$this->db->where('store_id', $id);
+                $this->db->where("FIELD(history_type, $string)");
+                $result = $this->db->get()->num_rows();
+                return $result;
+            }
 	
 }
 ?>

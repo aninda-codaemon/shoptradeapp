@@ -52,6 +52,13 @@ class Users_model extends CI_Model{
         $result = $this->db->get();
         return $result->result_array();
     }
+    
+    public function get_total_app_download_by_store_id($ids){
+        $this->db->from('users');
+        $this->db->where('store_token', $ids);
+        $result = $this->db->get();
+        return $result->num_rows();
+    }
   
 }
 
