@@ -15,6 +15,7 @@ class Shopify extends CI_Controller {
         $this->load->helper('url');
         $this->load->model('store_model', 'store');
         $this->load->model('activity_model', 'activity');
+        $this->load->model('users_model', 'users');
     }
     
     /**
@@ -129,7 +130,8 @@ class Shopify extends CI_Controller {
            
         }
 
-        $this->user_activity();
+        //$this->user_activity();
+        $this->dashboard();
     }
 
     /**
@@ -227,7 +229,7 @@ class Shopify extends CI_Controller {
         $page               = 1;
         $shop               = $this->session->userdata('shop');
         $response           = $this->store->get_store_info_by_domain($shop);
-        //print_r($response);
+        //print_r($response); exit;
         
         //if status is app_installed show welcome view.
         if($response['install_status'] == 'app_installed')
@@ -421,5 +423,30 @@ class Shopify extends CI_Controller {
         curl_close ($curl);
 
         return $response;
+    }
+    
+    public function dashboard()
+    {
+        $shop               = $this->session->userdata('shop');
+        $response           = $this->store->get_store_info_by_domain($shop);
+        //print_r($response); exit;
+        
+        $data['total_cart']             = $this->activity->get_activity_details_by_store_id($response['store_id'],'product_in_cart');
+        $data['total_wishtlist']        = $this->activity->get_activity_details_by_store_id($response['store_id'],'product_in_wishlist');
+        $data['total_product_views']    = $this->activity->get_activity_details_by_store_id($response['store_id'],'product_details');
+        $data['total_bounced']          = $this->activity->get_activity_details_by_store_id($response['store_id'],'payment_page');
+        $data['total_app_download']     = $this->users->get_total_app_download_by_store_id($response['store_id']);
+        
+        //if status is app_installed show welcome view.
+        if($response['install_status'] == 'app_installed')
+        {
+            $this->load->view('layout/user_welcome');
+        }
+        //if status is build_sent show activity view.
+        else if($response['install_status'] == 'build_sent')
+        {
+            //echo '<pre>'; print_r($data); exit;
+            $this->load->view('layout/dashboard', array('activity_count' => $data));
+        }
     }
 }
