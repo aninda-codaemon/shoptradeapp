@@ -51,7 +51,7 @@ class Payment extends CI_Controller {
         
         // Now, request the token and store it in your session.
         // Url to redirect and get the app authorise key/access token
-        $auth_url       = base_url() . $this->config->item('shopify_auth_url');
+        $auth_url       = base_url() . 'payment/get_shopify_merchant_info';
         
         ///// redirect to authorize url /////        
         //echo $shopifyClient->getAuthorizeUrl($scope, $auth_url, ' '); die();
@@ -70,8 +70,8 @@ class Payment extends CI_Controller {
         $code               = $this->input->get('code');
         $hmac               = $this->input->get('hmac');
 
-        $api_key            = $this->config->item('shopify_api_key');
-        $api_secret         = $this->config->item('shopify_api_secret');
+        $api_key            = 'e2219d466c1d5b026cc69f7191efa29d';//$this->config->item('shopify_api_key');
+        $api_secret         = 'ccc9a6058858bae5b93f30c4800fd924';//$this->config->item('shopify_api_secret');
         $shop               = $this->input->get('shop');
 
         $this->session->set_userdata('shop', $shop);
@@ -84,7 +84,8 @@ class Payment extends CI_Controller {
         ///// call shopify API to get access(offline) token /////
         $shopifyClient      = new ShopifyClient($shop, "", $api_key, $api_secret);
         $access_data        = $shopifyClient->getAccessToken($code);
-
+        print_r($access_data);
+        
         if ($store_exist > 0){
             //get the shop token access data
             $response           = $this->store->get_store_info_by_domain($shop);
@@ -101,7 +102,7 @@ class Payment extends CI_Controller {
                 $this->register_uninstall_webhook();
 
                 ///Redirect to the app dashboard for first time users///    
-                $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
+                $redirect_url = "https://".$shop."/admin/apps/shoptrade-app-test";
                 redirect($redirect_url, 'location');
                 die();
             }
@@ -128,7 +129,7 @@ class Payment extends CI_Controller {
 
             $this->register_uninstall_webhook();
             
-            $redirect_url = "https://".$shop."/admin/apps/shoptrade-app";
+            $redirect_url = "https://".$shop."/admin/apps/shoptrade-app-test";
             redirect($redirect_url, 'location');
             die();
            
