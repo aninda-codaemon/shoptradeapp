@@ -91,6 +91,8 @@ class ShopifyClient {
     }
 
     private function curlHttpApiRequest($method, $url, $query = '', $payload = '', $request_headers = array()) {
+        echo $method;
+        echo $url;
         $url = $this->curlAppendQuery($url, $query);
         $ch = curl_init($url);
         $this->curlSetopts($ch, $method, $payload, $request_headers);
