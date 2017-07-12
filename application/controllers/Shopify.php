@@ -426,10 +426,9 @@ class Shopify extends CI_Controller {
     }
     
     public function dashboard()
-    {
+    { 
         $shop               = $this->session->userdata('shop');
         $response           = $this->store->get_store_info_by_domain($shop);
-        //print_r($response); exit;
         
         $data['total_cart']             = $this->activity->get_activity_details_by_store_id($response['store_id'],'product_in_cart');
         $data['total_wishtlist']        = $this->activity->get_activity_details_by_store_id($response['store_id'],'product_in_wishlist');
