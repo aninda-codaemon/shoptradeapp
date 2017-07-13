@@ -1,0 +1,293 @@
+token: f951107eac9ff718329788a9c4fe4421
+
+Payment API URL[Recurring]:
+https://ktc-shopify-test-store-1.myshopify.com/admin/recurring_application_charges.json
+
+Payment Header[Recurring]:
+
+Content-Type: application/json
+X-Shopify-Access-Token: f951107eac9ff718329788a9c4fe4421
+
+Payment Body[Recurring]:
+
+{
+  "recurring_application_charge": {
+    "name": "Shoptrade Trial Plan",
+    "price": 1.0,
+    "trial_days": 5,
+    "test": true
+  }
+}
+
+{
+  "recurring_application_charge": {
+    "name": "Shoptrade Trial Plan",
+    "price": 1.0,
+    "trial_days": 5,
+    "test": true,
+    "return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&secret=ccc9a6058858bae5b93f30c4800fd924&scope=read_orders,write_orders,read_products,write_products,read_shipping,write_shipping,write_checkouts"
+  }
+}
+
+Payment Response[Recurring]:
+
+{
+    "recurring_application_charge": {
+        "id": 5600205,
+        "name": "Shoptrade Trial Plan",
+        "api_client_id": 1600619,
+        "price": "1.00",
+        "status": "pending",
+        "return_url": null,
+        "billing_on": null,
+        "created_at": "2017-07-13T03:36:41-04:00",
+        "updated_at": "2017-07-13T03:36:41-04:00",
+        "test": true,
+        "activated_on": null,
+        "trial_ends_on": null,
+        "cancelled_on": null,
+        "trial_days": 5,
+        "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&code=&hmac=a8e6c8f58900d1b408418a7f63fd975acb4778e1f9d75f152ab09fde04caebb6&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924&shop=ktc-shopify-test-store-1.myshopify.com&state=&timestamp=1499931401",
+        "confirmation_url": "https://ktc-shopify-test-store-1.myshopify.com/admin/charges/5600205/confirm_recurring_application_charge?signature=BAhpA81zVQ%3D%3D--9b8a9ab8721e612d7eb133f5a0a4cfcc8606a354"
+    }
+}
+
+{
+    "recurring_application_charge": {
+        "id": 5600277,
+        "name": "Shoptrade Trial Plan",
+        "api_client_id": 1600619,
+        "price": "1.00",
+        "status": "pending",
+        "return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&secret=ccc9a6058858bae5b93f30c4800fd924&scope=read_orders,write_orders,read_products,write_products,read_shipping,write_shipping,write_checkouts",
+        "billing_on": null,
+        "created_at": "2017-07-13T03:50:17-04:00",
+        "updated_at": "2017-07-13T03:50:17-04:00",
+        "test": true,
+        "activated_on": null,
+        "trial_ends_on": null,
+        "cancelled_on": null,
+        "trial_days": 5,
+        "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&charge_id=5600277&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924",
+        "confirmation_url": "https://ktc-shopify-test-store-1.myshopify.com/admin/charges/5600277/confirm_recurring_application_charge?signature=BAhpAxV0VQ%3D%3D--c1e259853c66ae7c0736bcef3017992782cbc5e4"
+    }
+}
+
+{
+    "recurring_application_charge": {
+        "id": 5600305,
+        "name": "Shoptrade Trial Plan",
+        "api_client_id": 1600619,
+        "price": "1.00",
+        "status": "pending",
+        "return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&secret=ccc9a6058858bae5b93f30c4800fd924&scope=read_orders,write_orders,read_products,write_products,read_shipping,write_shipping,write_checkouts",
+        "billing_on": null,
+        "created_at": "2017-07-13T03:53:41-04:00",
+        "updated_at": "2017-07-13T03:53:41-04:00",
+        "test": true,
+        "activated_on": null,
+        "trial_ends_on": null,
+        "cancelled_on": null,
+        "trial_days": 5,
+        "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&charge_id=5600305&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924",
+        "confirmation_url": "https://ktc-shopify-test-store-1.myshopify.com/admin/charges/5600305/confirm_recurring_application_charge?signature=BAhpAzF0VQ%3D%3D--ab1a669d9c64b0fe185468db0de80b339236aeb8"
+    }
+}
+
+{
+    "recurring_application_charge": {
+        "id": 5600331,
+        "name": "Shoptrade Trial Plan",
+        "api_client_id": 1600619,
+        "price": "1.00",
+        "status": "pending",
+        "return_url": null,
+        "billing_on": null,
+        "created_at": "2017-07-13T03:58:35-04:00",
+        "updated_at": "2017-07-13T03:58:35-04:00",
+        "test": true,
+        "activated_on": null,
+        "trial_ends_on": null,
+        "cancelled_on": null,
+        "trial_days": 5,
+        "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&code=&hmac=1f3fee2d777f9da64b9da2d116f8d7aad59b06ece368116565d8288b2df8fc50&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924&shop=ktc-shopify-test-store-1.myshopify.com&state=&timestamp=1499932715",
+        "confirmation_url": "https://ktc-shopify-test-store-1.myshopify.com/admin/charges/5600331/confirm_recurring_application_charge?signature=BAhpA0t0VQ%3D%3D--99f95f90c8db5b5d85e23fa09cfd8eebc8fa1db3"
+    }
+}
+
+{
+    "recurring_application_charge": {
+        "id": 5600379,
+        "name": "Shoptrade Trial Plan",
+        "api_client_id": 1600619,
+        "price": "1.00",
+        "status": "pending",
+        "return_url": null,
+        "billing_on": null,
+        "created_at": "2017-07-13T04:03:55-04:00",
+        "updated_at": "2017-07-13T04:03:55-04:00",
+        "test": true,
+        "activated_on": null,
+        "trial_ends_on": null,
+        "cancelled_on": null,
+        "trial_days": 5,
+        "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&code=&hmac=84a87d94ca091296523ac262eb4b347da3d34055e82c53211cf452cfb61dc34c&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924&shop=ktc-shopify-test-store-1.myshopify.com&state=&timestamp=1499933035",
+        "confirmation_url": "https://ktc-shopify-test-store-1.myshopify.com/admin/charges/5600379/confirm_recurring_application_charge?signature=BAhpA3t0VQ%3D%3D--f9414694ab66dfefa7f5597c92b28cf7410d145d"
+    }
+}
+
+
+Response Payment All:
+
+URL:
+[GET] https://ktc-shopify-test-store-1.myshopify.com/admin/recurring_application_charges.json
+
+Response:
+
+{
+    "recurring_application_charges": [
+        {
+            "id": 5600379,
+            "name": "Shoptrade Trial Plan",
+            "api_client_id": 1600619,
+            "price": "1.00",
+            "status": "accepted",
+            "return_url": null,
+            "billing_on": null,
+            "created_at": "2017-07-13T04:03:55-04:00",
+            "updated_at": "2017-07-13T04:04:30-04:00",
+            "test": true,
+            "activated_on": null,
+            "trial_ends_on": null,
+            "cancelled_on": null,
+            "trial_days": 5,
+            "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&code=&hmac=4bf5af069ae07369d554c673db5cebea0835c89eaf733ac751d46d713a9dc36d&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924&shop=ktc-shopify-test-store-1.myshopify.com&state=&timestamp=1499933459"
+        },
+        {
+            "id": 5600331,
+            "name": "Shoptrade Trial Plan",
+            "api_client_id": 1600619,
+            "price": "1.00",
+            "status": "accepted",
+            "return_url": null,
+            "billing_on": null,
+            "created_at": "2017-07-13T03:58:35-04:00",
+            "updated_at": "2017-07-13T03:59:13-04:00",
+            "test": true,
+            "activated_on": null,
+            "trial_ends_on": null,
+            "cancelled_on": null,
+            "trial_days": 5,
+            "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&code=&hmac=4bf5af069ae07369d554c673db5cebea0835c89eaf733ac751d46d713a9dc36d&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924&shop=ktc-shopify-test-store-1.myshopify.com&state=&timestamp=1499933459"
+        },
+        {
+            "id": 5600305,
+            "name": "Shoptrade Trial Plan",
+            "api_client_id": 1600619,
+            "price": "1.00",
+            "status": "accepted",
+            "return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&secret=ccc9a6058858bae5b93f30c4800fd924&scope=read_orders,write_orders,read_products,write_products,read_shipping,write_shipping,write_checkouts",
+            "billing_on": null,
+            "created_at": "2017-07-13T03:53:41-04:00",
+            "updated_at": "2017-07-13T03:54:54-04:00",
+            "test": true,
+            "activated_on": null,
+            "trial_ends_on": null,
+            "cancelled_on": null,
+            "trial_days": 5,
+            "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&charge_id=5600305&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924"
+        },
+        {
+            "id": 5600277,
+            "name": "Shoptrade Trial Plan",
+            "api_client_id": 1600619,
+            "price": "1.00",
+            "status": "declined",
+            "return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&secret=ccc9a6058858bae5b93f30c4800fd924&scope=read_orders,write_orders,read_products,write_products,read_shipping,write_shipping,write_checkouts",
+            "billing_on": null,
+            "created_at": "2017-07-13T03:50:17-04:00",
+            "updated_at": "2017-07-13T03:52:02-04:00",
+            "test": true,
+            "activated_on": null,
+            "trial_ends_on": null,
+            "cancelled_on": null,
+            "trial_days": 5,
+            "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&charge_id=5600277&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924"
+        },
+        {
+            "id": 5600205,
+            "name": "Shoptrade Trial Plan",
+            "api_client_id": 1600619,
+            "price": "1.00",
+            "status": "declined",
+            "return_url": null,
+            "billing_on": null,
+            "created_at": "2017-07-13T03:36:41-04:00",
+            "updated_at": "2017-07-13T03:47:57-04:00",
+            "test": true,
+            "activated_on": null,
+            "trial_ends_on": null,
+            "cancelled_on": null,
+            "trial_days": 5,
+            "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&code=&hmac=4bf5af069ae07369d554c673db5cebea0835c89eaf733ac751d46d713a9dc36d&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924&shop=ktc-shopify-test-store-1.myshopify.com&state=&timestamp=1499933459"
+        }
+    ]
+}
+
+Payment Charge Info API:
+
+URL:
+https://ktc-shopify-test-store-1.myshopify.com/admin/recurring_application_charges/5600379.json
+
+Response:
+
+{
+    "recurring_application_charge": {
+        "id": 5600379,
+        "name": "Shoptrade Trial Plan",
+        "api_client_id": 1600619,
+        "price": "1.00",
+        "status": "accepted",
+        "return_url": null,
+        "billing_on": null,
+        "created_at": "2017-07-13T04:03:55-04:00",
+        "updated_at": "2017-07-13T04:04:30-04:00",
+        "test": true,
+        "activated_on": null,
+        "trial_ends_on": null,
+        "cancelled_on": null,
+        "trial_days": 5,
+        "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&code=&hmac=42e9bbeced96921ca16b02280d05135e675c3bb55811a27eae8289928d1bf9b3&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924&shop=ktc-shopify-test-store-1.myshopify.com&state=&timestamp=1499938501"
+    }
+}
+
+Payment Activate Api:
+
+URL:
+https://ktc-shopify-test-store-1.myshopify.com/admin/recurring_application_charges/5600379/activate.json [POST]
+
+Response:
+
+{
+    "recurring_application_charge": {
+        "id": 5600379,
+        "name": "Shoptrade Trial Plan",
+        "api_client_id": 1600619,
+        "price": "1.00",
+        "status": "active",
+        "return_url": null,
+        "billing_on": "2017-07-18",
+        "created_at": "2017-07-13T04:03:55-04:00",
+        "updated_at": "2017-07-13T06:16:09-04:00",
+        "test": true,
+        "activated_on": "2017-07-13",
+        "trial_ends_on": "2017-07-18",
+        "cancelled_on": null,
+        "trial_days": 5,
+        "decorated_return_url": "https://shopify.shoptradeonline.com/shoptradeapp/payment/welcome_app?api=e2219d466c1d5b026cc69f7191efa29d&code=&hmac=c2ed698b6a058668ca4fd16ae475c9fdb4b5bac210b97596610a0f34ddec8e73&scope=read_orders%2Cwrite_orders%2Cread_products%2Cwrite_products%2Cread_shipping%2Cwrite_shipping%2Cwrite_checkouts&secret=ccc9a6058858bae5b93f30c4800fd924&shop=ktc-shopify-test-store-1.myshopify.com&state=&timestamp=1499940969"
+    }
+}
+
+
+
+

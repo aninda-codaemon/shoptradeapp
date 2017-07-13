@@ -46,6 +46,8 @@ class Payment extends CI_Controller {
         $api_key        = $this->input->get('api');
         $secret         = $this->input->get('secret');
         
+        //echo '<pre>';print_r($_GET);print_r($_POST);print_r($_SERVER);
+
         ////Load shopify API related files                
         $shopifyClient  = new ShopifyClient($shop, "", $api_key, $secret);
         
@@ -86,6 +88,8 @@ class Payment extends CI_Controller {
         $access_data        = $shopifyClient->getAccessToken($code);
         print_r($access_data);
         
+        $this->create_payment($shop, $access_data['access_token']);die();
+
         if ($store_exist > 0){
             //get the shop token access data
             $response           = $this->store->get_store_info_by_domain($shop);
@@ -137,6 +141,31 @@ class Payment extends CI_Controller {
 
         //$this->user_activity();
         $this->dashboard();
+    }
+
+    public function create_payment($shop, $access_token){
+        $api_key            = 'e2219d466c1d5b026cc69f7191efa29d';//$this->config->item('shopify_api_key');
+        $api_secret         = 'ccc9a6058858bae5b93f30c4800fd924';//$this->config->item('shopify_api_secret');
+        $api_url            = '/admin/recurring_application_charges.json';
+
+        //Shopify client call to fetch merchant info
+        $sc_shop            = new ShopifyClient($shop, $access_token, $api_key, $api_secret);
+        $params             = [
+                                'recurring_application_charge' => [
+                                            "name" => "Shoptrade Trial Plan",
+                                            "price" => 1.0,
+                                            "trial_days" => 5,
+                                            "test" => true
+                                        ]
+                            ];
+
+        // Get shop info            
+        $pay_info           = $sc_shop->call('POST', $api_url, $params);
+
+        //echo '<pre>';print_r($shop_info);die();
+        $this->session->set_userdata('charge_id', $pay_info['id']);
+        redirect($pay_info['confirmation_url']);
+        die();
     }
 
     /**
