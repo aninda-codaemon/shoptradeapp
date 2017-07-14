@@ -39,7 +39,7 @@ class Payment extends CI_Controller {
     * after redirecting from shopify app
     **/
     public function welcome_app() {
-        session_unset();
+        //session_unset();
 
         $shop           = $this->input->get('shop');
         $scope          = $this->input->get('scope');
@@ -86,9 +86,29 @@ class Payment extends CI_Controller {
         ///// call shopify API to get access(offline) token /////
         $shopifyClient      = new ShopifyClient($shop, "", $api_key, $api_secret);
         $access_data        = $shopifyClient->getAccessToken($code);
-        print_r($access_data);
+        //print_r($access_data);
+        //print_r($_SESSION);die();
         
-        $this->create_payment($shop, $access_data['access_token']);die();
+        if (isset($_SESSION['charge_id'])){
+            //get charge information            
+            $pay_info = $this->get_payment_charge_info($shop, $access_data['access_token']);
+            echo '<pre>';print_r($pay_info);
+            $this->session->unset_userdata('charge_id');
+
+            if (!empty($pay_info)){
+                if ($pay_info['status'] == 'declined'){
+                    echo 'You have declined the payment';
+                    die();
+                }elseif ($pay_info['status'] == 'approved'){
+                    //payment approved, now activate the payment
+                    echo 'Payment has been approved. Now the charge needs to be activated.';
+                    die();
+                }
+            }
+        }else{
+            //create a payment charge
+            $this->create_payment($shop, $access_data['access_token']);
+        }
 
         if ($store_exist > 0){
             //get the shop token access data
@@ -164,8 +184,27 @@ class Payment extends CI_Controller {
 
         //echo '<pre>';print_r($shop_info);die();
         $this->session->set_userdata('charge_id', $pay_info['id']);
+        //$_SESSION['charge_id'] = $pay_info['id'];
         redirect($pay_info['confirmation_url']);
         die();
+    }
+
+    public function get_payment_charge_info($shop, $access_token){
+        $api_key            = 'e2219d466c1d5b026cc69f7191efa29d';//$this->config->item('shopify_api_key');
+        $api_secret         = 'ccc9a6058858bae5b93f30c4800fd924';//$this->config->item('shopify_api_secret');
+        $api_url            = '/admin/recurring_application_charges/' . $this->session->userdata('charge_id') . '.json';
+
+        //Shopify client call to fetch merchant info
+        $sc_shop            = new ShopifyClient($shop, $access_token, $api_key, $api_secret);
+        $params             = [];
+
+        // Get shop info            
+        $pay_info           = $sc_shop->call('GET', $api_url, $params);
+
+        //echo '<pre>';print_r($pay_info);die();
+        //$this->session->set_userdata('charge_id', $pay_info['id']);
+        //redirect($pay_info['confirmation_url']);        
+        return $pay_info;
     }
 
     /**
