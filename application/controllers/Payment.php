@@ -96,6 +96,7 @@ class Payment extends CI_Controller {
             $this->session->unset_userdata('charge_id');
 
             if (!empty($pay_info)){
+                
                 if ($pay_info['status'] == 'declined'){
                     echo 'You have declined the payment';
                     die();
