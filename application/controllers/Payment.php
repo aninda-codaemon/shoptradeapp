@@ -86,7 +86,7 @@ class Payment extends CI_Controller {
         ///// call shopify API to get access(offline) token /////
         $shopifyClient      = new ShopifyClient($shop, "", $api_key, $api_secret);
         $access_data        = $shopifyClient->getAccessToken($code);
-        //print_r($access_data);
+        print_r($access_data);
         //print_r($_SESSION);die();
         
         if (isset($_SESSION['charge_id'])){
@@ -94,15 +94,21 @@ class Payment extends CI_Controller {
             $pay_info = $this->get_payment_charge_info($shop, $access_data['access_token']);
             echo '<pre>';print_r($pay_info);
             $this->session->unset_userdata('charge_id');
+            //die();
 
             if (!empty($pay_info)){
                 
                 if ($pay_info['status'] == 'declined'){
-                    echo 'You have declined the payment';
+                    echo 'You have declined the payment. You need to approve the payment to use this app.';
                     die();
-                }elseif ($pay_info['status'] == 'approved'){
+                }elseif ($pay_info['status'] == 'accepted'){
                     //payment approved, now activate the payment
                     echo 'Payment has been approved. Now the charge needs to be activated.';
+
+                    $active_info = $this->approve_payment_charge($shop, $access_data['access_token'], $pay_info);
+
+                    //save the payment information into tables
+                    print_r($active_info);
                     die();
                 }
             }
@@ -206,6 +212,26 @@ class Payment extends CI_Controller {
         //$this->session->set_userdata('charge_id', $pay_info['id']);
         //redirect($pay_info['confirmation_url']);        
         return $pay_info;
+    }
+
+    public function approve_payment_charge($shop, $access_token, $charge_info){
+        $api_key            = 'e2219d466c1d5b026cc69f7191efa29d';//$this->config->item('shopify_api_key');
+        $api_secret         = 'ccc9a6058858bae5b93f30c4800fd924';//$this->config->item('shopify_api_secret');
+        $api_url            = '/admin/recurring_application_charges/' . $charge_info['id'] . '/activate.json';
+
+        //Shopify client call to fetch merchant info
+        $sc_shop            = new ShopifyClient($shop, $access_token, $api_key, $api_secret);
+        $params             = [
+                                    'recurring_application_charge' => [
+                                            'id' => $charge_info['id'],                    
+                                            'api_client_id' => $charge_info['api_client_id'],
+                                            'price' => $charge_info['price']                                    
+                                    ]
+                                ];
+
+        // Get shop info            
+        $pay_active         = $sc_shop->call('POST', $api_url, $params);
+        return $pay_active;
     }
 
     /**
