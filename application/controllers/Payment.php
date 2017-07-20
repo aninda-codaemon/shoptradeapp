@@ -86,35 +86,44 @@ class Payment extends CI_Controller {
         ///// call shopify API to get access(offline) token /////
         $shopifyClient      = new ShopifyClient($shop, "", $api_key, $api_secret);
         $access_data        = $shopifyClient->getAccessToken($code);
-        print_r($access_data);
+        //print_r($access_data);
         //print_r($_SESSION);die();
         
         if (isset($_SESSION['charge_id'])){
             //get charge information            
             $pay_info = $this->get_payment_charge_info($shop, $access_data['access_token']);
-            echo '<pre>';print_r($pay_info);
-            $this->session->unset_userdata('charge_id');
+            //echo '<pre>';print_r($pay_info);            
             //die();
 
             if (!empty($pay_info)){
                 
                 if ($pay_info['status'] == 'declined'){
+                    $this->session->unset_userdata('charge_id');
                     echo 'You have declined the payment. You need to approve the payment to use this app.';
                     die();
                 }elseif ($pay_info['status'] == 'accepted'){
                     //payment approved, now activate the payment
-                    echo 'Payment has been approved. Now the charge needs to be activated.';
+                    //echo 'Payment has been approved. Now the charge needs to be activated.';
 
                     $active_info = $this->approve_payment_charge($shop, $access_data['access_token'], $pay_info);
 
                     //save the payment information into tables
-                    print_r($active_info);
-                    die();
+                    //print_r($active_info);
+                    //die();
                 }
             }
         }else{
-            //create a payment charge
-            $this->create_payment($shop, $access_data['access_token']);
+
+            if ($store_exist > 0){
+
+                //get the shop token access data
+                $shop_info = $this->store->get_store_info_by_domain($shop);
+                
+                if ($this->store->check_if_store_payment_exist(['store_token' => $shop_info['store_id']]) <= 0){
+                    //create a payment charge
+                    $this->create_payment($shop, $access_data['access_token']);
+                }                
+            }
         }
 
         if ($store_exist > 0){
@@ -129,13 +138,42 @@ class Payment extends CI_Controller {
             $response           = $this->store->get_store_info_by_domain($shop);
             $this->register_uninstall_webhook();
 
+            $active_info['store_token'] = $response['store_id'];
+
+            if (isset($_SESSION['charge_id'])){
+                //check if store payment is saved or not
+                $pay_exist          = $this->store->check_if_store_payment_exist($active_info);
+
+                if ($pay_exist > 0){
+                    //update payment information
+                    $this->store->update_store_payment_info($active_info);
+                }else{
+                    //save the payment information
+                    $this->store->save_store_payment_info($active_info);
+                }
+
+                //$this->session->unset_userdata('charge_id');
+            }
+
             if ($response['app_status'] == '0'){
                 $this->register_uninstall_webhook();
+
+                $this->session->unset_userdata('charge_id');
 
                 ///Redirect to the app dashboard for first time users///    
                 $redirect_url = "https://".$shop."/admin/apps/shoptrade-app-test";
                 redirect($redirect_url, 'location');
                 die();
+            }else{
+            
+                if (isset($_SESSION['charge_id'])){
+                    $this->session->unset_userdata('charge_id');
+
+                    ///Redirect to the app dashboard for first time users///    
+                    $redirect_url = "https://".$shop."/admin/apps/shoptrade-app-test";
+                    redirect($redirect_url, 'location');
+                    die();
+                }
             }
 
         }else{
@@ -158,12 +196,28 @@ class Payment extends CI_Controller {
                                         'shop_owner' => $shop_info['shop_owner']
                                     );
 
+            $active_info['store_token'] = $shop_info['id'];
+
+            if (isset($_SESSION['charge_id'])){
+                $this->session->unset_userdata('charge_id');
+
+                //check if store payment is saved or not
+                $pay_exist          = $this->store->check_if_store_payment_exist($active_info);
+
+                if ($pay_exist > 0){
+                    //update payment information
+                    $this->store->update_store_payment_info($active_info);
+                }else{
+                    //save the payment information
+                    $this->store->save_store_payment_info($active_info);
+                }
+            }
+
             $this->register_uninstall_webhook();
             
             $redirect_url = "https://".$shop."/admin/apps/shoptrade-app-test";
             redirect($redirect_url, 'location');
-            die();
-           
+            die();           
         }
 
         //$this->user_activity();
@@ -181,7 +235,7 @@ class Payment extends CI_Controller {
                                 'recurring_application_charge' => [
                                             "name" => "Shoptrade Trial Plan",
                                             "price" => 1.0,
-                                            "trial_days" => 5,
+                                            "trial_days" => 7,
                                             "test" => true
                                         ]
                             ];

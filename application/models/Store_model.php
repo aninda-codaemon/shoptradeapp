@@ -29,7 +29,7 @@ class Store_model extends CI_Model{
 					'myshopify_domain' => $shop_info['myshopify_domain'],
 					'iana_timezone' => $shop_info['iana_timezone'],
 					'key' => $shop_info['tokens']['access_token'],
-                                        'install_status' => 'app_installed',
+                    'install_status' => 'app_installed',
 					'data_dump' => serialize(json_encode($shop_info))
 				);
 
@@ -52,6 +52,48 @@ class Store_model extends CI_Model{
 		}else{
 			return 0;
 		}
+	}
+
+	public function check_if_store_payment_exist($params=array()){
+
+		$this->db->from('store_payment');
+		$this->db->where('store_token', $params['store_token']);
+		return $this->db->count_all_results();
+	}
+
+	public function save_store_payment_info($shop_info=array()){
+		$data = array(
+					'store_token' => $shop_info['store_token'],					
+					'charge_id' => $shop_info['id'],					
+					'charge_value' => floatval($shop_info['price']),
+					'charge_status' => $shop_info['status'],
+					'charge_description' => serialize(json_encode($shop_info)),					
+				);
+
+		$this->db->insert('store_payment', $data);
+		return $this->db->insert_id();
+	}
+
+	public function update_store_payment_info($shop_info=array()){
+		$data = array(									
+					'charge_id' => $shop_info['id'],					
+					'charge_value' => floatval($shop_info['price']),
+					'charge_status' => $shop_info['status'],
+					'charge_description' => serialize(json_encode($shop_info)),					
+				);
+
+		$this->db->set('update_date', 'NOW()', false);
+		$this->db->update('store_payment', $data, ['store_token' => $shop_info['store_token']]);
+
+		if (empty($this->db->error())){
+			return 1;
+		}else{
+			return 0;
+		}	
+	}
+
+	public function check_if_active_payment_exist_for_store(){
+		
 	}
         
 }
